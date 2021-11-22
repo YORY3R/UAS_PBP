@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "105103113064",
+    "project_id": "e-learning-1de33",
+    "storage_bucket": "e-learning-1de33.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105103113064:android:c6fed05dccac30646074dd",
+        "android_client_info": {
+          "package_name": "com.yory3r.e_learning"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105103113064-df676b5l01ilutid5rjld1nk8eh6j36q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeTjI53j-OPvxW4SQrIgGKJQp3FQFReWY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105103113064-df676b5l01ilutid5rjld1nk8eh6j36q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

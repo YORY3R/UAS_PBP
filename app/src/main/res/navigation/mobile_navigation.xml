@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_module">
+
+    <fragment
+        android:id="@+id/nav_module"
+        android:name="com.yory3r.e_learning.fragments.ModuleFragment"
+        android:label="Module"
+        tools:layout="@layout/fragment_module" />
+
+    <fragment
+        android:id="@+id/nav_share"
+        android:name="com.yory3r.e_learning.fragments.ShareFragment"
+        android:label="Share"
+        tools:layout="@layout/fragment_share" />
+
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.yory3r.e_learning.fragments.AboutFragment"
+        android:label="About"
+        tools:layout="@layout/fragment_about" />
+</navigation>
