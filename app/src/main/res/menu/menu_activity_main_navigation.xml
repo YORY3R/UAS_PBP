@@ -16,5 +16,10 @@
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_baseline_group_work_24"
             android:title="About" />
+        <item
+            android:id="@+id/nav_rate"
+            android:icon="@drawable/ic_baseline_rate_review_24"
+            android:title="Rate Us
+" />
     </group>
 </menu>

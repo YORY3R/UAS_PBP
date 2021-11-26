@@ -6,7 +6,8 @@ public class UserModel
 {
     private String foto;
     private String nama;
-    private String npm;
+    private String tanggalLahir;
+    private String jenisKelamin;
     private String nomorTelepon;
     private String email;
     private String password;
@@ -33,14 +34,24 @@ public class UserModel
         this.nama = nama;
     }
 
-    public String getNpm()
+    public String getTanggalLahir()
     {
-        return npm;
+        return tanggalLahir;
     }
 
-    public void setNpm(String npm)
+    public void setTanggalLahir(String tanggalLahir)
     {
-        this.npm = npm;
+        this.tanggalLahir = tanggalLahir;
+    }
+
+    public String getJenisKelamin()
+    {
+        return jenisKelamin;
+    }
+
+    public void setJenisKelamin(String jenisKelamin)
+    {
+        this.jenisKelamin = jenisKelamin;
     }
 
     public String getNomorTelepon()

@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,6 +23,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,6 +37,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -54,36 +59,52 @@ import com.yory3r.e_learning.utils.ResizeBitmap;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener, View.OnTouchListener
 {
     private static final int PERMISSION_REQUEST_CAMERA = 100;
     private static final int CAMERA_REQUEST = 0;
     private static final int GALLERY_PICTURE = 1;
+    private static final String[] LIST_JENIS_KELAMIN = new String[]{"Laki - Laki", "Perempuan"};
 
 
     private ImageView ivFoto;
-    private EditText etNama;
-    private EditText etNpm;
-    private EditText etTelepon;
-    private EditText etEmail;
-    private EditText etPassword;
+    private TextInputEditText etNama;
+    private AutoCompleteTextView tvTanggalLahir;
+    private AutoCompleteTextView tvJenisKelamin;
+    private TextInputEditText etTelepon;
+    private TextInputEditText etEmail;
+    private TextInputEditText etPassword;
     private Button btnEdit;
     private Button btnDone;
     private Button btnCancel;
     private Button btnShowPassword;
+
+    private TextInputLayout layoutNama;
+    private TextInputLayout layoutTanggalLahir;
+    private TextInputLayout layoutJenisKelamin;
+    private TextInputLayout layoutNomorTelepon;
+    private TextInputLayout layoutEmail;
+    private TextInputLayout layoutPassword;
+
 
 
     private ChangeString change;
 
     private String url;
     private String tempNama;
-    private String tempNpm;
+    private String tempTanggalLahir;
+    private String tempJenisKelamin;
     private String tempTelepon;
     private String tempEmail;
     private String tempPassword;
 
     private Bitmap bitmap = null;
+
+    private Calendar calendarDate;
 
     private ResizeBitmap resizeBitmap;
 
@@ -119,6 +140,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("Users/" + change.DotsToEtc(user.getEmail()));
+        // TODO: 25/11/2021 DIPERSIMPEL DENGAN NAMBAH USER DAN CONCATINATION 
 
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReferenceFromUrl("gs://e-learning-1de33.appspot.com/Foto/" + change.DotsToEtc(user.getEmail()));
@@ -143,7 +165,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     {
         ivFoto = binding.ivFoto;
         etNama = binding.etNama;
-        etNpm = binding.etNpm;
+        tvTanggalLahir = binding.tvTanggalLahir;
+        tvJenisKelamin = binding.tvJenisKelamin;
         etTelepon = binding.etTelepon;
         etEmail = binding.etEmail;
         etPassword = binding.etPassword;
@@ -152,11 +175,22 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         btnDone = binding.btnDone;
         btnCancel = binding.btnCancel;
         btnShowPassword = binding.btnShowPassword;
+
+
+
+        layoutNama = binding.layoutNama;
+        layoutTanggalLahir = binding.layoutTanggalLahir;
+        layoutJenisKelamin = binding.layoutJenisKelamin;
+        layoutNomorTelepon = binding.layoutNomorTelepon;
+        layoutEmail = binding.layoutEmail;
+        layoutPassword = binding.layoutPassword;
     }
 
     private void initListener()
     {
         ivFoto.setOnClickListener(ProfileActivity.this);
+        tvTanggalLahir.setOnClickListener(ProfileActivity.this);
+        tvJenisKelamin.setOnClickListener(ProfileActivity.this);
         btnEdit.setOnClickListener(ProfileActivity.this);
         btnDone.setOnClickListener(ProfileActivity.this);
         btnCancel.setOnClickListener(ProfileActivity.this);
@@ -171,7 +205,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             public void onDataChange(@NonNull DataSnapshot snapshot)
             {
                 tempNama = snapshot.getValue(UserModel.class).getNama();
-                tempNpm = snapshot.getValue(UserModel.class).getNpm();
+                tempTanggalLahir = snapshot.getValue(UserModel.class).getTanggalLahir();
+                tempJenisKelamin = snapshot.getValue(UserModel.class).getJenisKelamin();
                 tempTelepon = snapshot.getValue(UserModel.class).getNomorTelepon();
                 tempEmail = snapshot.getValue(UserModel.class).getEmail();
                 tempPassword = snapshot.getValue(UserModel.class).getPassword();
@@ -208,7 +243,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private void setText()
     {
         etNama.setText(tempNama);
-        etNpm.setText(tempNpm);
+        tvTanggalLahir.setText(tempTanggalLahir);
+        tvJenisKelamin.setText(tempJenisKelamin);
         etTelepon.setText(tempTelepon);
         etEmail.setText(tempEmail);
         etPassword.setText(tempPassword);
@@ -219,11 +255,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if(value == 0)
         {
             ivFoto.setEnabled(false);
-            etNama.setEnabled(false);
-            etNpm.setEnabled(false);
-            etTelepon.setEnabled(false);
-            etEmail.setEnabled(false);
-            etPassword.setEnabled(false);
+
+            layoutNama.setEnabled(false);
+            layoutTanggalLahir.setEnabled(false);
+            layoutJenisKelamin.setEnabled(false);
+            layoutNomorTelepon.setEnabled(false);
+            layoutEmail.setEnabled(false);
+            layoutPassword.setEnabled(false);
 
             btnEdit.setVisibility(View.VISIBLE);
             btnDone.setVisibility(View.GONE);
@@ -232,11 +270,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         else
         {
             ivFoto.setEnabled(true);
-            etNama.setEnabled(true);
-            etNpm.setEnabled(true);
-            etTelepon.setEnabled(true);
-            etEmail.setEnabled(false);
-            etPassword.setEnabled(true);
+
+            layoutNama.setEnabled(true);
+            layoutTanggalLahir.setEnabled(true);
+            layoutJenisKelamin.setEnabled(true);
+            layoutNomorTelepon.setEnabled(true);
+            layoutEmail.setEnabled(false);
+            layoutPassword.setEnabled(false);
 
             btnEdit.setVisibility(View.GONE);
             btnDone.setVisibility(View.VISIBLE);
@@ -253,13 +293,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             View selectMediaView = layoutInflater.inflate(R.layout.layout_select_media, null);
             final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(selectMediaView.getContext()).create();
 
-
-            // TODO: 20/11/2021 GANTI MENGGUNAKAN BINDING
             Button btnKamera = selectMediaView.findViewById(R.id.btnKamera);
             Button btnGaleri = selectMediaView.findViewById(R.id.btnGaleri);
-
-
-
 
             btnKamera.setOnClickListener(new View.OnClickListener()
             {
@@ -294,55 +329,92 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             alertDialog.setView(selectMediaView);
             alertDialog.show();
         }
+        else if(view.getId() == tvTanggalLahir.getId())
+        {
+            if(tvTanggalLahir.isEnabled())
+            {
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+
+                DatePickerDialog dialog = new DatePickerDialog(ProfileActivity.this, (datepicker , year, month, day) ->
+                {
+                    calendarDate = Calendar.getInstance();
+                    calendarDate.set(year,month,day);
+                    tvTanggalLahir.setText(format.format(calendarDate.getTime()));
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+                dialog.show();
+            }
+        }
+        else if(view.getId() == tvJenisKelamin.getId())
+        {
+            int layout = R.layout.item_list;
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(ProfileActivity.this,layout,LIST_JENIS_KELAMIN);
+            tvJenisKelamin.setAdapter(adapter);
+        }
         else if(view.getId() == btnEdit.getId())
         {
             setEnable(1);
         }
         else if(view.getId() == btnDone.getId())
         {
-            boolean inputNama = isEmpty(etNama);
-            boolean inputNpm = isEmpty(etNpm);
-            boolean inputTelepon = isEmpty(etTelepon);
-            boolean inputPassword = isEmpty(etPassword);
+            boolean inputNama = isEmpty(etNama,"Nama");
+            boolean inputTanggalLahir = isEmptyDropdown(tvTanggalLahir,"Tanggal Lahir");
+            boolean inputJenisKelamin = isEmptyDropdown(tvJenisKelamin,"Jenis Kelamin");
+            boolean inputNomorTelepon = isEmpty(etTelepon,"Nomor Telepon");
+            boolean inputEmail = isEmpty(etEmail,"Email");
+            boolean inputPassword = isEmpty(etPassword,"Password");
 
-            if(inputNama && inputNpm && inputTelepon && inputPassword)
+            if(inputNama && inputTanggalLahir && inputJenisKelamin && inputNomorTelepon && inputEmail && inputPassword)
             {
                 String nama = etNama.getText().toString();
-                String npm = etNpm.getText().toString();
+                String tanggalLahir = tvTanggalLahir.getText().toString();
+                String jenisKelamin=  tvJenisKelamin.getText().toString();
                 String telepon = etTelepon.getText().toString();
+//                    String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
 
-                databaseReference.child("nama").setValue(nama);
-                databaseReference.child("npm").setValue(npm);
-                databaseReference.child("nomorTelepon").setValue(telepon);
-
-                if(!password.equals(tempPassword))
+                if(nama.equals(tempNama) && tanggalLahir.equals(tempTanggalLahir) && jenisKelamin.equals(tempJenisKelamin) && telepon.equals(tempTelepon) && firebaseUri == null)
                 {
-                    user.updatePassword(password)
-                    .addOnCompleteListener(new OnCompleteListener<Void>()
-                    {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task)
-                        {
-                            if(task.isSuccessful())
-                            {
-                                databaseReference.child("password").setValue(password);
-                                gotoLoginActivity();
-
-                                Toast.makeText(ProfileActivity.this, "Silahkan Login Lagi", Toast.LENGTH_SHORT).show();
-                            }
-                            else
-                            {
-                                databaseReference.child("password").setValue(tempPassword);
-                                Toast.makeText(ProfileActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                    Toast.makeText(ProfileActivity.this, "Edit Data Gagal, Data Masih Sama !", Toast.LENGTH_SHORT).show();
                 }
-
-                if(firebaseUri != null)
+                else
                 {
-                    storageReference.putFile(firebaseUri);
+                    databaseReference.child("nama").setValue(nama);
+                    databaseReference.child("tanggalLahir").setValue(tanggalLahir);
+                    databaseReference.child("jenisKelamin").setValue(jenisKelamin);
+                    databaseReference.child("nomorTelepon").setValue(telepon);
+
+                    if(!password.equals(tempPassword))
+                    {
+                        user.updatePassword(password)
+                        .addOnCompleteListener(new OnCompleteListener<Void>()
+                        {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task)
+                            {
+                                if(task.isSuccessful())
+                                {
+                                    databaseReference.child("password").setValue(password);
+                                    gotoLoginActivity();
+
+                                    Toast.makeText(ProfileActivity.this, "Silahkan Login Lagi", Toast.LENGTH_SHORT).show();
+                                }
+                                else
+                                {
+                                    databaseReference.child("password").setValue(tempPassword);
+                                    Toast.makeText(ProfileActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+
+                    if(firebaseUri != null)
+                    {
+                        storageReference.putFile(firebaseUri);
+                    }
+
+                    Toast.makeText(ProfileActivity.this, "Edit Data Sukses", Toast.LENGTH_SHORT).show();
                 }
 
                 setEnable(0);
@@ -440,11 +512,24 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         ivFoto.setImageBitmap(bitmap);
     }
 
-    private boolean isEmpty(EditText editText)
+    private boolean isEmpty(TextInputEditText editText, String input)
     {
         if(editText.getText().toString().isEmpty())
         {
-            editText.setError("Input Kosong !");
+            editText.setError(input + " Kosong !");
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private boolean isEmptyDropdown(AutoCompleteTextView textView, String input)
+    {
+        if(textView.getText().toString().isEmpty())
+        {
+            textView.setError(input + " Kosong !");
             return false;
         }
         else

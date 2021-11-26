@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,10 +18,16 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.BoringLayout;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -28,6 +35,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.badge.BadgeUtils;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
@@ -56,30 +64,41 @@ import com.yory3r.e_learning.utils.ResizeBitmap;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher
 {
     private static final int PERMISSION_REQUEST_CAMERA = 100;
     private static final int CAMERA_REQUEST = 0;
     private static final int GALLERY_PICTURE = 1;
+    private static final String[] LIST_JENIS_KELAMIN = new String[]{"Laki - Laki", "Perempuan"};
 
 
     private ImageView ivFoto;
-    private EditText etNama;
-    private EditText etNpm;
-    private EditText etNomorTelepon;
-    private EditText etEmail;
-    private EditText etPassword;
+    private TextInputEditText etNama;
+    private AutoCompleteTextView tvTanggalLahir;
+    private AutoCompleteTextView tvJenisKelamin;
+    private TextInputEditText etNomorTelepon;
+    private TextInputEditText etEmail;
+    private TextInputEditText etPassword;
+    private TextInputEditText etKonfirmasiPassword;
     private Button btnLogin;
     private Button btnRegister;
+    private Calendar calendarDate;
+
+
+
+
     private Intent intent;
     private Boolean resume = false;
 
@@ -121,6 +140,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         storageReference = storage.getReference("Foto/");
 
         initView();
+        initAdapter();
         initListener();
 
     }
@@ -129,19 +149,35 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     {
         ivFoto = binding.ivFoto;
         etNama = binding.etNama;
-        etNpm = binding.etNpm;
+        tvTanggalLahir = binding.tvTanggalLahir;
+        tvJenisKelamin = binding.tvJenisKelamin;
         etNomorTelepon = binding.etNomorTelepon;
         etEmail = binding.etEmail;
         etPassword = binding.etPassword;
+        etKonfirmasiPassword = binding.etKonfirmasiPassword;
         btnLogin = binding.btnLogin;
         btnRegister = binding.btnRegister;
     }
 
+    private void initAdapter()
+    {
+        int layout = R.layout.item_list;
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(RegisterActivity.this,layout,LIST_JENIS_KELAMIN);
+        tvJenisKelamin.setAdapter(adapter);
+
+
+    }
+
+
     private void initListener()
     {
         ivFoto.setOnClickListener(RegisterActivity.this);
+        tvTanggalLahir.setOnClickListener(RegisterActivity.this);
         btnLogin.setOnClickListener(RegisterActivity.this);
         btnRegister.setOnClickListener(RegisterActivity.this);
+
+        tvTanggalLahir.addTextChangedListener(RegisterActivity.this);
+        tvJenisKelamin.addTextChangedListener(RegisterActivity.this);
     }
 
     @Override
@@ -194,19 +230,36 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             alertDialog.setView(selectMediaView);
             alertDialog.show();
         }
+        else if(view.getId() == tvTanggalLahir.getId())
+        {
+            Calendar calendar = Calendar.getInstance();
+            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+
+            DatePickerDialog dialog = new DatePickerDialog(RegisterActivity.this, (datepicker ,year, month, day) ->
+            {
+                calendarDate = Calendar.getInstance();
+                calendarDate.set(year,month,day);
+                tvTanggalLahir.setText(format.format(calendarDate.getTime()));
+            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+
+            dialog.show();
+        }
         else if(view.getId() == btnLogin.getId())
         {
             gotoLoginActivity();
         }
         else if(view.getId() == btnRegister.getId())
         {
-            Boolean inputNama = isEmpty(etNama,"Nama");
-            Boolean inputNpm = isEmpty(etNpm,"NPM");
-            Boolean inputNomorTelepon = isEmpty(etNomorTelepon,"Nomor Telepon");
-            Boolean inputEmail = isEmpty(etEmail,"Email");
-            Boolean inputPassword = isEmpty(etPassword,"Password");
+            boolean inputNama = isEmpty(etNama,"Nama");
+            boolean inputTanggalLahir = isEmptyDropdown(tvTanggalLahir,"Tanggal Lahir");
+            boolean inputJenisKelamin = isEmptyDropdown(tvJenisKelamin,"Jenis Kelamin");
+            boolean inputNomorTelepon = isEmpty(etNomorTelepon,"Nomor Telepon");
+            boolean inputEmail = isEmpty(etEmail,"Email");
+            boolean inputPassword = isEmpty(etPassword,"Password");
+            boolean inputKonfirmasiPassword = isEmpty(etKonfirmasiPassword,"Konfirmasi Password");
 
-            if(inputNama && inputNpm && inputNomorTelepon && inputEmail && inputPassword)
+
+            if(inputNama && inputTanggalLahir && inputJenisKelamin && inputNomorTelepon && inputEmail && inputPassword && inputKonfirmasiPassword)
             {
                 if(bitmap == null)
                 {
@@ -215,18 +268,47 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 else
                 {
                     String nama = etNama.getText().toString();
-                    String npm = etNpm.getText().toString();
+                    String tanggalLahir = tvTanggalLahir.getText().toString();
+                    String jenisKelamin=  tvJenisKelamin.getText().toString();
                     String nomorTelepon = etNomorTelepon.getText().toString();
                     String email = etEmail.getText().toString();
                     String password = etPassword.getText().toString();
+                    String konfirmasiPassword = etKonfirmasiPassword.getText().toString();
 
-                    registerUser(nama, npm, nomorTelepon, email, password);
+                    if(konfirmasiPassword.equals(password))
+                    {
+                        registerUser(nama, tanggalLahir, jenisKelamin, nomorTelepon, email, password);
+                    }
+                    else
+                    {
+                        etKonfirmasiPassword.setError("Password Tidak Sama !");
+                    }
                 }
             }
         }
     }
 
-    private boolean isEmpty(EditText editText, String input)
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+    @Override
+    public void afterTextChanged(Editable editable)
+    {
+        if(!tvTanggalLahir.getText().toString().isEmpty())
+        {
+            tvTanggalLahir.setError(null);
+        }
+
+        if(!tvJenisKelamin.getText().toString().isEmpty())
+        {
+            tvJenisKelamin.setError(null);
+        }
+    }
+
+    private boolean isEmpty(TextInputEditText editText, String input)
     {
         if(editText.getText().toString().isEmpty())
         {
@@ -239,7 +321,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    private void registerUser(String nama, String npm, String nomorTelepon, String email, String password)
+    private boolean isEmptyDropdown(AutoCompleteTextView textView, String input)
+    {
+        if(textView.getText().toString().isEmpty())
+        {
+            textView.setError(input + " Kosong !");
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private void registerUser(String nama, String tanggalLahir, String jenisKelamin, String nomorTelepon, String email, String password)
     {
         auth.createUserWithEmailAndPassword(email, password)
         .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>()
@@ -254,7 +349,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     if (user != null)
                     {
                         sendEmail(user);
-                        sendDatabase(nama, npm, nomorTelepon, email, password);
+                        sendDatabase(nama, tanggalLahir, jenisKelamin, nomorTelepon, email, password);
                     }
                 }
                 else
@@ -308,28 +403,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-    private void sendDatabase(String nama, String npm, String nomorTelepon, String email, String password)
+    private void sendDatabase(String nama, String tanggalLahir, String jenisKelamin, String nomorTelepon, String email, String password)
     {
         UserModel userModel = new UserModel();
 
-
         userModel.setFoto(resizeBitmap.bitmapToBase64(bitmap));
         userModel.setNama(nama);
-        userModel.setNpm(npm);
+        userModel.setTanggalLahir(tanggalLahir);
+        userModel.setJenisKelamin(jenisKelamin);
         userModel.setNomorTelepon(nomorTelepon);
         userModel.setEmail(email);
         userModel.setPassword(password);
-
-
-
-
-
-
-
-
-
-
-
 
         databaseReference.child(change.DotsToEtc(email)).setValue(userModel)
         .addOnCompleteListener(new OnCompleteListener<Void>()
@@ -362,13 +446,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }
             }
         });
-
-
-
-
-
-
-        // TODO: 20/11/2021 KEMBALIKAN SUPAYA TIDAK REDUNDANT PARAMETERNYA
     }
 
     @Override

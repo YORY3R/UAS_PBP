@@ -98,47 +98,29 @@
                 android:paddingBottom="10dp">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
                     android:src="@drawable/ic_baseline_person_24" />
 
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutNama"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp">
+                    android:layout_marginStart="10dp"
+                    android:enabled="false">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="bottom|start"
-                        android:paddingBottom="1dp"
-                        android:text="Nama"
-                        android:textColor="#000000"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etNama"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="#00000000"
-                        android:ems="10"
-                        android:enabled="false"
-                        android:gravity="start|top"
+                        android:enabled="true"
                         android:hint="Nama"
-                        android:inputType="textPersonName"
-                        android:paddingTop="1dp"
-                        android:text="YORY3R"
+                        android:inputType="textCapWords"
                         android:textColor="#000000"
-                        android:textSize="16sp" />
-                </LinearLayout>
+                        android:textSize="20sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
@@ -157,48 +139,30 @@
                 android:paddingBottom="10dp">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_baseline_info_24" />
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_date_range_24" />
 
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutTanggalLahir"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp">
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:enabled="false">
 
-                    <TextView
+                    <AutoCompleteTextView
+                        android:id="@+id/tvTanggalLahir"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="bottom|start"
-                        android:paddingBottom="1dp"
-                        android:text="NPM"
+                        android:enabled="true"
+                        android:hint="Tanggal Lahir"
+                        android:inputType="none"
                         android:textColor="#000000"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/etNpm"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="#00000000"
-                        android:ems="10"
-                        android:enabled="false"
-                        android:gravity="start|top"
-                        android:hint="NPM"
-                        android:inputType="number"
-                        android:paddingTop="1dp"
-                        android:text="101010101"
-                        android:textColor="#000000"
-                        android:textSize="16sp" />
-
-                </LinearLayout>
+                        android:textSize="20sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
@@ -217,47 +181,72 @@
                 android:paddingBottom="10dp">
 
                 <ImageView
-                    android:layout_width="50dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_boy_24" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutJenisKelamin"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
                     android:layout_weight="1"
+                    android:enabled="false">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/tvJenisKelamin"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:enabled="true"
+                        android:hint="Jenis Kelamin"
+                        android:inputType="none"
+                        android:textColor="#000000"
+                        android:textSize="20sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="10dp">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
                     android:src="@drawable/ic_baseline_phone_24" />
 
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutNomorTelepon"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp">
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:enabled="false">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="bottom|start"
-                        android:paddingBottom="1dp"
-                        android:text="Telepon"
-                        android:textColor="#000000"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etTelepon"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="#00000000"
-                        android:ems="10"
-                        android:enabled="false"
-                        android:gravity="start|top"
-                        android:hint="Nama"
+                        android:enabled="true"
+                        android:hint="Nomor Telepon"
                         android:inputType="number"
-                        android:paddingTop="1dp"
-                        android:text="081010101010"
                         android:textColor="#000000"
-                        android:textSize="16sp" />
-                </LinearLayout>
+                        android:textSize="20sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
@@ -276,47 +265,30 @@
                 android:paddingBottom="10dp">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_baseline_home_24" />
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_baseline_email_24" />
 
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/layoutEmail"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp">
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:enabled="false">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="bottom|start"
-                        android:paddingBottom="1dp"
-                        android:text="Email"
-                        android:textColor="#000000"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etEmail"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:background="#00000000"
-                        android:ems="10"
-                        android:enabled="false"
-                        android:gravity="start|top"
-                        android:hint="Nama"
-                        android:inputType="textEmailAddress"
-                        android:paddingTop="1dp"
-                        android:text="101010101@students.uajy.ac.id"
+                        android:enabled="true"
+                        android:hint="Email"
+                        android:inputType="textCapWords"
                         android:textColor="#000000"
-                        android:textSize="16sp" />
-                </LinearLayout>
+                        android:textSize="20sp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 
@@ -335,63 +307,49 @@
                 android:paddingBottom="10dp">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
                     android:src="@drawable/ic_baseline_lock_24" />
 
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp">
+                    android:layout_weight="1"
+                    app:cardBackgroundColor="#00FFFFFF"
+                    app:cardCornerRadius="0dp"
+                    app:cardElevation="0dp">
 
-                    <TextView
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/layoutPassword"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="bottom|start"
-                        android:paddingBottom="1dp"
-                        android:text="Password"
-                        android:textColor="#000000"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
+                        android:layout_marginStart="10dp"
+                        android:enabled="false">
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" >
-
-                        <EditText
+                        <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPassword"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:background="#00000000"
-                            android:ems="10"
-                            android:enabled="false"
-                            android:gravity="start|top"
-                            android:hint="Nama"
+                            android:enabled="true"
+                            android:hint="Password"
                             android:inputType="textPassword"
-                            android:paddingTop="1dp"
-                            android:text="101010101"
                             android:textColor="#000000"
-                            android:textSize="16sp" />
+                            android:textSize="20sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                        <Button
-                            android:id="@+id/btnShowPassword"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_gravity="center|end"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:background="@drawable/ic_baseline_remove_red_eye_24" />
-                    </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
+                    <Button
+                        android:id="@+id/btnShowPassword"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center|end"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/ic_baseline_remove_red_eye_24"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp" />
+                </androidx.cardview.widget.CardView>
 
             </LinearLayout>
 

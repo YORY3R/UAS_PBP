@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menuStreetMaps"
+        android:title="Street" />
+    <item
+        android:id="@+id/menuDarkMaps"
+        android:title="Dark" />
+    <item
+        android:id="@+id/menuLightMaps"
+        android:title="Light" />
+    <item
+        android:id="@+id/menuOutdoorsMaps"
+        android:title="Outdoors" />
+    <item
+        android:id="@+id/menuSatelliteMaps"
+        android:title="Satellite" />
+    <item
+        android:id="@+id/menuSatelliteStreetMaps"
+        android:title="Satellite Street" />
+</menu>

@@ -55,6 +55,7 @@ import com.google.firebase.storage.StorageReference;
 import com.yory3r.e_learning.R;
 import com.yory3r.e_learning.databinding.ActivityMainBinding;
 import com.yory3r.e_learning.databinding.ActivityMainNavigationHeaderBinding;
+import com.yory3r.e_learning.fragments.MapsFragment;
 import com.yory3r.e_learning.models.UserModel;
 import com.yory3r.e_learning.utils.ChangeString;
 import com.yory3r.e_learning.utils.ResizeBitmap;
@@ -175,7 +176,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initListener()
     {
         navigationHeader.setOnClickListener(this);
-        ivFotoProfil.setOnClickListener(this);
 
         bottomNavigation.setOnNavigationItemSelectedListener(this);
     }
@@ -188,7 +188,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         (
             R.id.nav_module,
             R.id.nav_share,
-            R.id.nav_about
+            R.id.nav_about,
+            R.id.nav_rate
         )
         .setOpenableLayout(drawerLayout)
         .build();
@@ -260,11 +261,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem)
                 {
-                    if(index == 0)//Settings
+                    if(index == 0)
+                    {
+                        gotoFavoriteActivity();
+                    }
+                    else if(index == 1)//Settings
                     {
                         gotoSettingsActivity();
                     }
-                    else if(index == 1)//Logout
+                    else if(index == 2)//Logout
                     {
                         gotoLoginActivity();
                     }
@@ -284,60 +289,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
-    {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == PERMISSION_REQUEST_CAMERA)
-        {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, CAMERA_REQUEST);
-            }
-            else
-            {
-                Toast.makeText(MainActivity.this, "Permission denied.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (data == null)
-        {
-            return;
-        }
-
-        if (resultCode == RESULT_OK && requestCode == GALLERY_PICTURE)
-        {
-            Uri selectedImage = data.getData();
-
-            try
-            {
-                InputStream inputStream = getContentResolver().openInputStream(selectedImage);
-                bitmap = BitmapFactory.decodeStream(inputStream);
-            }
-            catch (Exception e)
-            {
-                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }
-        else if (resultCode == RESULT_OK && requestCode == CAMERA_REQUEST)
-        {
-            bitmap = (Bitmap) data.getExtras().get("data");
-        }
-
-        ResizeBitmap resizeBitmap = new ResizeBitmap();
-        bitmap = resizeBitmap.getResizedBitmap(bitmap, 512);
-
-        ivFotoProfil.setImageBitmap(bitmap);
-    }
-
-    @Override
     public void onClick(View view)
     {
         if(view.getId() == navigationHeader.getId())
@@ -348,53 +299,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
             finish();
         }
-        else if(view.getId() == ivFotoProfil.getId())
-        {
-            LayoutInflater layoutInflater = LayoutInflater.from(MainActivity.this);
-            View selectMediaView = layoutInflater.inflate(R.layout.layout_select_media, null);
-            final AlertDialog alertDialog = new AlertDialog.Builder(selectMediaView.getContext()).create();
-
-
-            // TODO: 20/11/2021 GANTI MENGGUNAKAN BINDING
-            Button btnKamera = selectMediaView.findViewById(R.id.btnKamera);
-            Button btnGaleri = selectMediaView.findViewById(R.id.btnGaleri);
-
-
-
-
-            btnKamera.setOnClickListener(new View.OnClickListener()
-            {
-                public void onClick(View v)
-                {
-                    if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
-                    {
-                        String[] permission = {Manifest.permission.CAMERA};
-                        requestPermissions(permission, PERMISSION_REQUEST_CAMERA);
-                    }
-                    else
-                    {
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(intent, CAMERA_REQUEST);
-                    }
-
-                    alertDialog.dismiss();
-                }
-            });
-
-            btnGaleri.setOnClickListener(new View.OnClickListener()
-            {
-                public void onClick(View v)
-                {
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, GALLERY_PICTURE);
-
-                    alertDialog.dismiss();
-                }
-            });
-
-            alertDialog.setView(selectMediaView);
-            alertDialog.show();
-        }
     }
 
     @Override
@@ -404,12 +308,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
         }
+        else if(item.getItemId() == R.id.menuMaps)
+        {
+            MapsFragment fragment = new MapsFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentRoot,fragment).commit();
+        }
         else if(item.getItemId() == R.id.menuGame)
         {
             Toast.makeText(getApplicationContext(), "Game", Toast.LENGTH_SHORT).show();
         }
 
         return true;
+    }
+
+    private void gotoFavoriteActivity()
+    {
+        intent = new Intent(MainActivity.this, FavoriteActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void gotoSettingsActivity()

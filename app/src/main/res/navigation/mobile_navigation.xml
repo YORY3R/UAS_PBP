@@ -22,4 +22,9 @@
         android:name="com.yory3r.e_learning.fragments.AboutFragment"
         android:label="About"
         tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/nav_rate"
+        android:name="com.yory3r.e_learning.fragments.RateFragment"
+        android:label="Rate"
+        tools:layout="@layout/fragment_rate" />
 </navigation>
