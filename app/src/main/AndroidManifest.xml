@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ELearning">
         <activity
+            android:name=".activities.RegisterActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.FavoriteActivity"
             android:exported="true" />
         <activity
@@ -37,7 +40,7 @@
             android:name=".activities.LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.RegisterActivity"
+            android:name=".activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

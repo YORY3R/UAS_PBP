@@ -7,10 +7,6 @@
         android:title="Home" />
 
     <item
-        android:id="@+id/menuMaps"
-        android:icon="@drawable/ic_baseline_map_24"
-        android:title="Maps" />
-    <item
         android:id="@+id/menuGame"
         android:icon="@drawable/ic_baseline_games_24"
         android:title="Game" />

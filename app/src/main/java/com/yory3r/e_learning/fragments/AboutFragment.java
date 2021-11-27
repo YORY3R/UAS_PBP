@@ -33,6 +33,7 @@ public class AboutFragment extends Fragment
 
         aboutRecycler.setAdapter(adapter);
         aboutRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        // TODO: 27/11/2021 JADDIN INIT VIEW DLL 
 
 
 

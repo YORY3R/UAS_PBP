@@ -57,6 +57,7 @@ import com.yory3r.e_learning.databinding.ActivityMainBinding;
 import com.yory3r.e_learning.databinding.ActivityMainNavigationHeaderBinding;
 import com.yory3r.e_learning.fragments.MapsFragment;
 import com.yory3r.e_learning.models.UserModel;
+import com.yory3r.e_learning.preferences.EditAkunPreferences;
 import com.yory3r.e_learning.utils.ChangeString;
 import com.yory3r.e_learning.utils.ResizeBitmap;
 
@@ -94,14 +95,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvNamaProfil;
     private TextView tvEmailProfil;
 
-    private Bitmap bitmap = null;
-
 
     private ChangeString change;
 
 
-    private ProgressBar progressBar;
     private Intent intent;
+
+    private EditAkunPreferences preferences;
 
 
 
@@ -143,6 +143,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initNavigation();
 
         getData();
+
+
+
+
+        preferences = new EditAkunPreferences(MainActivity.this);
+        checkEdit();
 
 
 
@@ -245,6 +251,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    private void checkEdit()
+    {
+        if(preferences.checkEdit())
+        {
+            navigationHeader.setEnabled(true);
+        }
+        else
+        {
+            navigationHeader.setEnabled(false);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -261,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem)
                 {
-                    if(index == 0)
+                    if(index == 0)//Favorite
                     {
                         gotoFavoriteActivity();
                     }
@@ -293,11 +311,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         if(view.getId() == navigationHeader.getId())
         {
-            Toast.makeText(getApplicationContext(), "Click Header", Toast.LENGTH_SHORT).show();
-
-            intent = new Intent(MainActivity.this, ProfileActivity.class);
-            startActivity(intent);
-            finish();
+            gotoProfileActivity();
         }
     }
 
@@ -308,14 +322,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
         }
-        else if(item.getItemId() == R.id.menuMaps)
-        {
-            MapsFragment fragment = new MapsFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentRoot,fragment).commit();
-        }
         else if(item.getItemId() == R.id.menuGame)
         {
-            Toast.makeText(getApplicationContext(), "Game", Toast.LENGTH_SHORT).show();
+            gotoGameActivity();
         }
 
         return true;
@@ -349,6 +358,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent = new Intent(MainActivity.this, RegisterActivity.class);
         startActivity(intent);
         auth.signOut();
+        finish();
+    }
+
+    private void gotoProfileActivity()
+    {
+        intent = new Intent(MainActivity.this, ProfileActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void gotoGameActivity()
+    {
+        intent = new Intent(MainActivity.this, GameActivity.class);
+        startActivity(intent);
         finish();
     }
 
