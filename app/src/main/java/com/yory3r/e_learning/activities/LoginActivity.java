@@ -20,14 +20,21 @@ import com.google.firebase.auth.FirebaseUser;
 import com.yory3r.e_learning.R;
 import com.yory3r.e_learning.databinding.ActivityLoginBinding;
 import com.yory3r.e_learning.databinding.ActivityRegisterBinding;
+import com.yory3r.e_learning.preferences.AdminPreferences;
+import com.yory3r.e_learning.preferences.EditAkunPreferences;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener
 {
+    private String EMAIL_ADMIN = "yolifsyebathanim@yahoo.com";
+
     private EditText etEmail;
     private EditText etPassword;
     private Button btnRegister;
     private Button btnLogin;
     private Intent intent;
+
+    private AdminPreferences preferences;
+
     private FirebaseAuth auth;
     private FirebaseUser user;
     private ActivityLoginBinding binding;
@@ -44,6 +51,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         initView();
         initListener();
+
+
+
+        preferences = new AdminPreferences(LoginActivity.this);
+
     }
 
     private void initView()
@@ -150,6 +162,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void gotoMainActivity()
     {
+        if(user.getEmail().equals(EMAIL_ADMIN))
+        {
+            preferences.loginAdmin("true");
+        }
+        else
+        {
+            preferences.logoutAdmin();
+        }
+
         intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();

@@ -57,6 +57,7 @@ import com.yory3r.e_learning.databinding.ActivityMainBinding;
 import com.yory3r.e_learning.databinding.ActivityMainNavigationHeaderBinding;
 import com.yory3r.e_learning.fragments.MapsFragment;
 import com.yory3r.e_learning.models.UserModel;
+import com.yory3r.e_learning.preferences.AdminPreferences;
 import com.yory3r.e_learning.preferences.EditAkunPreferences;
 import com.yory3r.e_learning.utils.ChangeString;
 import com.yory3r.e_learning.utils.ResizeBitmap;
@@ -71,12 +72,6 @@ import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener
 {
-    private static final int PERMISSION_REQUEST_CAMERA = 100;
-    private static final int CAMERA_REQUEST = 0;
-    private static final int GALLERY_PICTURE = 1;
-
-
-
     private AppBarConfiguration appBarConfiguration;
     private NavController navController;
 
@@ -87,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private BottomNavigationView bottomNavigation;
 
     private MenuItem menuItem;
+    private MenuItem adminItem;
 
 
     private View navigationHeader;
@@ -96,12 +92,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tvEmailProfil;
 
 
+
+
+
+
+
     private ChangeString change;
 
 
     private Intent intent;
 
-    private EditAkunPreferences preferences;
+    private EditAkunPreferences editAkunPreferences;
+    private AdminPreferences adminPreferences;
 
 
 
@@ -147,9 +149,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-        preferences = new EditAkunPreferences(MainActivity.this);
+        editAkunPreferences = new EditAkunPreferences(MainActivity.this);
         checkEdit();
 
+        adminPreferences = new AdminPreferences(MainActivity.this);
 
 
 
@@ -177,6 +180,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvNamaProfil = navigationHeader.findViewById(navigationBinding.tvNamaProfil.getId());
         tvEmailProfil = navigationHeader.findViewById(navigationBinding.tvEmailProfil.getId());
 
+
     }
 
     private void initListener()
@@ -192,7 +196,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         appBarConfiguration = new AppBarConfiguration.Builder
         (
-            R.id.nav_module,
+            R.id.nav_course,
             R.id.nav_share,
             R.id.nav_about,
             R.id.nav_rate
@@ -237,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onComplete(@NonNull Task<Uri> task)
             {
-                if(task.isSuccessful())
+                if(task.isSuccessful())// TODO: 28/11/2021 BUAT SUPAYA EMAIL TIDDAK CAPITAL CAPSWORD 
                 {
                     String url = task.getResult().toString();
 
@@ -253,13 +257,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void checkEdit()
     {
-        if(preferences.checkEdit())
+
+
+        if(editAkunPreferences.checkEdit())
         {
             navigationHeader.setEnabled(true);
         }
         else
         {
             navigationHeader.setEnabled(false);
+        }
+    }
+
+    private void checkAdmin()
+    {
+        if(adminPreferences.checkAdmin())
+        {
+            adminItem.setEnabled(true);
+            adminItem.setVisible(true);
+        }
+        else
+        {
+            adminItem.setEnabled(false);
+            adminItem.setVisible(false);
         }
     }
 
@@ -271,6 +291,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         for(int a = 0 ; a < menu.size() ; a++)
         {
             menuItem = menu.getItem(a);
+            adminItem = menu.getItem(0);
+
+            checkAdmin();
 
             int index = a;
 
@@ -279,15 +302,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public boolean onMenuItemClick(MenuItem menuItem)
                 {
-                    if(index == 0)//Favorite
+                    if(index == 0)//Admin
+                    {
+                        gotoAdminActivity();
+                    }
+                    else if(index == 1)//Favorite
                     {
                         gotoFavoriteActivity();
                     }
-                    else if(index == 1)//Settings
+                    else if(index == 2)//Settings
                     {
                         gotoSettingsActivity();
                     }
-                    else if(index == 2)//Logout
+                    else if(index == 3)//Logout
                     {
                         gotoLoginActivity();
                     }
@@ -328,6 +355,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         return true;
+    }
+
+    private void gotoAdminActivity()
+    {
+        intent = new Intent(MainActivity.this, AdminActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void gotoFavoriteActivity()

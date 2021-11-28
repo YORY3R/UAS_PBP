@@ -3,18 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/menuAdmin"
+        android:icon="@drawable/ic_baseline_admin_panel_settings_24"
+        android:title="Admin"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menuFavorite"
         android:icon="@drawable/ic_baseline_favorite_24"
         android:title="Favorite"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/menuSettings"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="Settings"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/menuLogout"
         android:icon="@drawable/ic_baseline_login_24"
         android:title="Logout"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>

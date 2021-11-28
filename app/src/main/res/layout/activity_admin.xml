@@ -4,14 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="activityFavorite"
-            type="com.yory3r.e_learning.activities.FavoriteActivity" />
+            name="activityAdmin"
+            type="com.yory3r.e_learning.activities.AdminActivity" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.FavoriteFragment">
+        tools:context=".fragments.CourseFragment">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:orientation="vertical">
 
             <SearchView
-                android:id="@+id/svFavorite"
+                android:id="@+id/svCourseAdmin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -29,24 +29,39 @@
             </SearchView>
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/srFavorite"
+                android:id="@+id/srCourseAdmin"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvFavorite"
+                    android:id="@+id/rvCourseAdmin"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:clipToPadding="false"
                     android:paddingHorizontal="12dp"
                     android:paddingBottom="88dp"
-                    tools:listitem="@layout/item_favorite" />
+                    tools:listitem="@layout/item_course" />
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabCreate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:src="@drawable/ic_baseline_add_24" />
+
         </LinearLayout>
+
+        <include
+            android:id="@+id/layoutLoading"
+            layout="@layout/layout_loading"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
     </FrameLayout>
 </layout>
