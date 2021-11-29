@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -35,6 +38,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.yory3r.e_learning.R;
 import com.yory3r.e_learning.activities.CreateUpdateActivity;
 import com.yory3r.e_learning.adapters.CourseAdapter;
 import com.yory3r.e_learning.api.CourseApi;
@@ -161,6 +165,9 @@ public class CourseFragment extends Fragment implements SearchView.OnQueryTextLi
                 {
                     Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
+
+                MenuItem menuFavorite = getActivity().findViewById(R.id.menuFavorite);
+                menuFavorite.setEnabled(false);
             }
         })
         {

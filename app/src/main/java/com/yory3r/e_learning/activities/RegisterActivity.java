@@ -64,9 +64,11 @@ import com.yory3r.e_learning.utils.ResizeBitmap;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -250,6 +252,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
         else if(view.getId() == btnRegister.getId())
         {
+            boolean inputFoto = isEmptyFoto(bitmap);
             boolean inputNama = isEmpty(etNama,"Nama");
             boolean inputTanggalLahir = isEmptyDropdown(tvTanggalLahir,"Tanggal Lahir");
             boolean inputJenisKelamin = isEmptyDropdown(tvJenisKelamin,"Jenis Kelamin");
@@ -258,32 +261,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             boolean inputPassword = isEmpty(etPassword,"Password");
             boolean inputKonfirmasiPassword = isEmpty(etKonfirmasiPassword,"Konfirmasi Password");
 
+            boolean teleponValidation = teleponValidation(etNomorTelepon);
+            boolean emailValidation = emailValidation(etEmail);
+            boolean passwordValidation = passwordValidation(etPassword,etKonfirmasiPassword);
 
-            if(inputNama && inputTanggalLahir && inputJenisKelamin && inputNomorTelepon && inputEmail && inputPassword && inputKonfirmasiPassword)
+            if(inputFoto && inputNama && inputTanggalLahir && inputJenisKelamin && inputNomorTelepon && inputEmail && inputPassword && inputKonfirmasiPassword && teleponValidation && emailValidation && passwordValidation)
             {
-                if(bitmap == null)
-                {
-                    Toast.makeText(RegisterActivity.this, "Belum Memilih Foto Profil", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    String nama = etNama.getText().toString();
-                    String tanggalLahir = tvTanggalLahir.getText().toString();
-                    String jenisKelamin=  tvJenisKelamin.getText().toString();
-                    String nomorTelepon = etNomorTelepon.getText().toString();
-                    String email = etEmail.getText().toString();
-                    String password = etPassword.getText().toString();
-                    String konfirmasiPassword = etKonfirmasiPassword.getText().toString();
+                String nama = etNama.getText().toString();
+                String tanggalLahir = tvTanggalLahir.getText().toString();
+                String jenisKelamin=  tvJenisKelamin.getText().toString();
+                String nomorTelepon = etNomorTelepon.getText().toString();
+                String email = etEmail.getText().toString();
+                String password = etPassword.getText().toString();
 
-                    if(konfirmasiPassword.equals(password))
-                    {
-                        registerUser(nama, tanggalLahir, jenisKelamin, nomorTelepon, email, password);
-                    }
-                    else
-                    {
-                        etKonfirmasiPassword.setError("Password Tidak Sama !");
-                    }
-                }
+                registerUser(nama, tanggalLahir, jenisKelamin, nomorTelepon, email, password);
             }
         }
     }
@@ -313,12 +304,27 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if(editText.getText().toString().isEmpty())
         {
             editText.setError(input + " Kosong !");
-            return false;
         }
         else
         {
             return true;
         }
+
+        return false;
+    }
+
+    private  boolean isEmptyFoto(Bitmap bitmap)
+    {
+        if(bitmap == null)
+        {
+            Toast.makeText(RegisterActivity.this, "Belum Memilih Foto Profil !", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private boolean isEmptyDropdown(AutoCompleteTextView textView, String input)
@@ -326,12 +332,73 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if(textView.getText().toString().isEmpty())
         {
             textView.setError(input + " Kosong !");
-            return false;
         }
         else
         {
             return true;
         }
+
+        return false;
+    }
+
+    private boolean teleponValidation(EditText telepon)
+    {
+        String strTelepon = telepon.getText().toString();
+        int length = telepon.getText().toString().length();
+
+        if((length < 11 || length > 13 || strTelepon.charAt(0) != '0' || strTelepon.charAt(1) != '8') && length != 0)
+        {
+            telepon.setError("Nomor Telepon Tidak Valid !");
+        }
+        else
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean emailValidation(EditText email)
+    {
+        String strEmail = email.getText().toString();
+
+        if(!strEmail.isEmpty())
+        {
+            if(strEmail.contains("@") && strEmail.contains("."))
+            {
+                return true;
+            }
+            else
+            {
+                email.setError("Email Tidak Valid !");
+            }
+        }
+
+        return false;
+    }
+
+    private boolean passwordValidation(EditText password, EditText konfirmasi)
+    {
+        String strPassword = password.getText().toString();
+        String strKonfirmasi = konfirmasi.getText().toString();
+
+        if(strPassword.length() < 6)
+        {
+            password.setError("Password Minimal 6 Karakter");
+        }
+        else
+        {
+            if(strKonfirmasi.equals(strPassword))
+            {
+                return true;
+            }
+            else
+            {
+                konfirmasi.setError("Password Tidak Sama !");
+            }
+        }
+
+        return false;
     }
 
     private void registerUser(String nama, String tanggalLahir, String jenisKelamin, String nomorTelepon, String email, String password)

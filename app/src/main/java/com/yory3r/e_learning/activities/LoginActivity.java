@@ -81,10 +81,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         else if(view.getId() == btnLogin.getId())
         {
-            Boolean input1 = isEmpty(etEmail,"Email");
-            Boolean input2 = isEmpty(etPassword,"Password");
+            boolean inputEmail = isEmpty(etEmail,"Email");
+            boolean inputPassword = isEmpty(etPassword,"Password");
+            boolean emailValidation = emailValidation(etEmail);
+            boolean passwordValidation = passwordValidation(etPassword);
 
-            if(input1 && input2)
+            if(inputEmail && inputPassword && emailValidation && passwordValidation)
             {
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
@@ -105,6 +107,44 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         {
             return true;
         }
+    }
+
+    private boolean emailValidation(EditText email)
+    {
+        String strEmail = email.getText().toString();
+
+        if(!strEmail.isEmpty())
+        {
+            if(strEmail.contains("@") && strEmail.contains("."))
+            {
+                return true;
+            }
+            else
+            {
+                email.setError("Email Tidak Valid !");
+            }
+        }
+
+        return false;
+    }
+
+    private boolean passwordValidation(EditText password)
+    {
+        String strPassword = password.getText().toString();
+
+        if(!strPassword.isEmpty())
+        {
+            if(strPassword.length() < 6)
+            {
+                password.setError("Password Minimal 6 Karakter");
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void loginUser(String email, String password)

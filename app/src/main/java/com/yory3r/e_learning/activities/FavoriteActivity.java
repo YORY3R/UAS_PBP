@@ -158,4 +158,11 @@ public class FavoriteActivity extends AppCompatActivity implements SearchView.On
         finish();
     }
 
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+
+    }
 }

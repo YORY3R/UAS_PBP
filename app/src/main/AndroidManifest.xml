@@ -38,16 +38,16 @@
             android:name=".activities.ProfileActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.SplashActivity"
+            android:name=".activities.GameActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.GameActivity"
+            android:name=".activities.MainActivity"
             android:exported="true" />
         <activity
             android:name=".activities.LoginActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
