@@ -6,6 +6,8 @@ public class FavoriteModel
     private String nama;
     private String deskripsi;
     private String kode;
+    private String jurusan;
+    private boolean isFavorite;
 
     public FavoriteModel(){}
 
@@ -47,5 +49,25 @@ public class FavoriteModel
     public void setKode(String kode)
     {
         this.kode = kode;
+    }
+
+    public String getJurusan()
+    {
+        return jurusan;
+    }
+
+    public void setJurusan(String jurusan)
+    {
+        this.jurusan = jurusan;
+    }
+
+    public boolean getFavorite()
+    {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite)
+    {
+        isFavorite = favorite;
     }
 }

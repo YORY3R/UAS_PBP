@@ -76,6 +76,23 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
+                    android:hint="Deskripsi">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/etDeskripsi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapWords" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:hint="Kode">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -93,10 +110,10 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:hint="Deskripsi">
+                    android:hint="Jurusan">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etDeskripsi"
+                        android:id="@+id/etJurusan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textCapWords" />
@@ -120,6 +137,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
                         android:text="Batal" />
 
                     <Button
@@ -127,6 +146,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
                         android:text="Simpan" />
 
                 </LinearLayout>

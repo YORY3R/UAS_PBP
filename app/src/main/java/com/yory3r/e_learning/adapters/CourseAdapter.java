@@ -3,6 +3,7 @@ package com.yory3r.e_learning.adapters;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,8 +79,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.viewHolder
 
         initFirebase();
         initAlertDialog();
-
-
     }
 
     // TODO: 28/11/2021 BUAT JADI INIT FIREBASE
@@ -113,6 +112,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.viewHolder
         private ImageView ivFoto;
         private TextView tvNama;
         private TextView tvKode;
+        private TextView tvJurusan;
         private Button btnTambah;
         private Button btnDeskripsi;
 
@@ -123,6 +123,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.viewHolder
             ivFoto = binding.ivFoto;
             tvNama = binding.tvNama;
             tvKode = binding.tvKode;
+            tvJurusan = binding.tvJurusan;
             btnTambah = binding.btnTambah;
             btnDeskripsi = binding.btnDeskripsi;
         }
@@ -146,25 +147,39 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.viewHolder
 
         holder.tvNama.setText(course.getNama());
         holder.tvKode.setText(course.getKode());
+        holder.tvJurusan.setText(course.getJurusan());
+
+        databaseReference.child(String.valueOf(course.getId()))
+        .addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.getValue() != null)
+                {
+                    if(snapshot.getValue(FavoriteModel.class).getFavorite())
+                    {
+                        holder.btnTambah.setBackgroundResource(R.drawable.ic_baseline_favorite_24);
+                        addFavorite(holder);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
 
         holder.btnTambah.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
+                addFavorite(holder);
+
                 int position = holder.getAdapterPosition();
-                course = filteredCourseList.get(position); // TODO: 28/11/2021 BUAT SEPERTI INI DIPISAH PISAH GITU
-                
+                course = filteredCourseList.get(position);
+
                 long id = course.getId();
                 String nama = course.getNama();
-                String deskripsi = course.getDeskripsi();
-                String kode = course.getKode();
-
-                FavoriteModel favorite = new FavoriteModel();
-                favorite.setId(id);
-                favorite.setNama(nama);
-                favorite.setDeskripsi(deskripsi);
-                favorite.setKode(kode);
 
                 databaseReference.child(String.valueOf(id))
                 .addListenerForSingleValueEvent(new ValueEventListener()
@@ -172,43 +187,21 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.viewHolder
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot)
                     {
-                        if(snapshot.getValue() == null)
-                        {
-
-                            databaseReference.child(String.valueOf(id))
-                            .setValue(favorite).addOnCompleteListener(new OnCompleteListener<Void>()
-                            {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task)
-                                {
-                                    if(task.isSuccessful())
-                                    {
-                                        Toast.makeText(context, "Berhasil Tambah Favorite", Toast.LENGTH_SHORT).show();
-                                    }
-                                    else
-                                    {
-                                        Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                            });
-                        }
-                        else
+                        if(snapshot.getValue() != null)
                         {
                             Toast.makeText(context, "Sudah Pernah Tambah Course " + nama + " Ke Favorite", Toast.LENGTH_SHORT).show();
                         }
+                        else
+                        {
+                            Toast.makeText(context, "Berhasil Tambah Favorite", Toast.LENGTH_SHORT).show();
+                        }
+
+                        holder.btnTambah.setBackgroundResource(R.drawable.ic_baseline_favorite_24);
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error)
-                    {
-
-                    }
+                    public void onCancelled(@NonNull DatabaseError error){}
                 });
-
-
-
-
-                // TODO: 28/11/2021 GANTI SEMUAMNYA YANG PAKE TITIK BANYAK JADIIIN SATU SATU
             }
         });
 
@@ -281,5 +274,38 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.viewHolder
                 notifyDataSetChanged();
             }
         };
+    }
+
+    private void addFavorite(viewHolder holder)
+    {
+        int position = holder.getAdapterPosition();
+        course = filteredCourseList.get(position); // TODO: 28/11/2021 BUAT SEPERTI INI DIPISAH PISAH GITU
+
+        long id = course.getId();
+        String nama = course.getNama();
+        String deskripsi = course.getDeskripsi();
+        String kode = course.getKode();
+        String jurusan = course.getJurusan();
+
+        FavoriteModel favorite = new FavoriteModel();
+        favorite.setId(id);
+        favorite.setNama(nama);
+        favorite.setDeskripsi(deskripsi);
+        favorite.setKode(kode);
+        favorite.setJurusan(jurusan);
+        favorite.setFavorite(true);
+
+        databaseReference.child(String.valueOf(id))
+        .setValue(favorite).addOnCompleteListener(new OnCompleteListener<Void>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<Void> task)
+            {
+                if(!task.isSuccessful())
+                {
+                    Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

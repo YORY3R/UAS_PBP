@@ -271,7 +271,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 String tanggalLahir = tvTanggalLahir.getText().toString();
                 String jenisKelamin=  tvJenisKelamin.getText().toString();
                 String nomorTelepon = etNomorTelepon.getText().toString();
-                String email = etEmail.getText().toString();
+                String email = etEmail.getText().toString().toLowerCase();
                 String password = etPassword.getText().toString();
 
                 registerUser(nama, tanggalLahir, jenisKelamin, nomorTelepon, email, password);

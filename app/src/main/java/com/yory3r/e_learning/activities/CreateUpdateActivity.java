@@ -68,6 +68,7 @@ public class CreateUpdateActivity extends AppCompatActivity implements View.OnCl
     private TextInputEditText etNama;
     private TextInputEditText etKode;
     private TextInputEditText etDeskripsi;
+    private TextInputEditText etJurusan;
     private Button btnCancel;
     private Button btnSave;
 
@@ -110,6 +111,7 @@ public class CreateUpdateActivity extends AppCompatActivity implements View.OnCl
             etNama.setText(getIntent().getStringExtra("nama"));
             etDeskripsi.setText(getIntent().getStringExtra("deskripsi"));
             etKode.setText(getIntent().getStringExtra("kode"));
+            etJurusan.setText(getIntent().getStringExtra("jurusan"));
         }
         
     }
@@ -119,8 +121,9 @@ public class CreateUpdateActivity extends AppCompatActivity implements View.OnCl
         tvJudul = binding.tvJudul;
         ivFoto = binding.ivFoto;
         etNama = binding.etNama;
-        etKode = binding.etKode;
         etDeskripsi = binding.etDeskripsi;
+        etKode = binding.etKode;
+        etJurusan = binding.etJurusan;
         btnCancel = binding.btnCancel;
         btnSave = binding.btnSave;
         layoutLoading = binding.layoutLoading.getRoot();
@@ -284,7 +287,8 @@ public class CreateUpdateActivity extends AppCompatActivity implements View.OnCl
         Course course = new Course(
                 etNama.getText().toString(),
                 etDeskripsi.getText().toString(),
-                etKode.getText().toString());
+                etKode.getText().toString(),
+                etJurusan.getText().toString());
 
         StringRequest stringRequest = new StringRequest(POST, CourseApi.CREATE, new Response.Listener<String>()
         {
@@ -356,7 +360,8 @@ public class CreateUpdateActivity extends AppCompatActivity implements View.OnCl
         Course course = new Course(
                 etNama.getText().toString(),
                 etDeskripsi.getText().toString(),
-                etKode.getText().toString());
+                etKode.getText().toString(),
+                etJurusan.getText().toString());
 
         StringRequest stringRequest = new StringRequest(PUT, CourseApi.UPDATE + id, new Response.Listener<String>()
         {

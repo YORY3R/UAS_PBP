@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ import com.yory3r.e_learning.models.FavoriteModel;
 import com.yory3r.e_learning.utils.ChangeString;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.viewHolder>
 {
@@ -93,6 +95,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.viewHo
         private ImageView ivFoto;
         private TextView tvNama;
         private TextView tvKode;
+        private TextView tvJurusan;
         private Button btnDelete;
         private Button btnDeskripsi;
 
@@ -103,6 +106,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.viewHo
             ivFoto = binding.ivFoto;
             tvNama = binding.tvNama;
             tvKode = binding.tvKode;
+            tvJurusan = binding.tvJurusan;
             btnDelete = binding.btnDelete;
             btnDeskripsi = binding.btnDeskripsi;
 
@@ -128,6 +132,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.viewHo
 //        holder.ivFoto.setImageResource(favorite.getFoto());
         holder.tvNama.setText(favorite.getNama());
         holder.tvKode.setText(favorite.getKode());
+        holder.tvJurusan.setText(favorite.getJurusan());
         
         holder.btnDelete.setOnClickListener(new View.OnClickListener() 
         {
@@ -154,6 +159,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.viewHo
                                 {
                                     if(task.isSuccessful())
                                     {
+                                        holder.btnDelete.setBackgroundResource(R.drawable.ic_baseline_favorite_border_24);
                                         Toast.makeText(context, "Berhasil Hapus Favorite", Toast.LENGTH_SHORT).show();
                                         ((FavoriteActivity) context).initAdapter();
                                     }
@@ -201,5 +207,47 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.viewHo
     public int getItemCount()
     {
         return listFavorite.size();
+    }
+
+    public Filter getFilter()
+    {
+        return new Filter()
+        {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence)
+            {
+                String charSequenceString = charSequence.toString();
+                List<FavoriteModel> filtered = new ArrayList<>();
+
+                if(charSequenceString.isEmpty())
+                {
+                    filtered.addAll(listFavorite);
+                }
+                else
+                {
+                    for(FavoriteModel FavoriteModel : listFavorite)
+                    {
+                        if(FavoriteModel.getNama().toLowerCase().contains(charSequenceString.toLowerCase()))
+                        {
+                            filtered.add(FavoriteModel);
+                        }
+                    }
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filtered;
+
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults)
+            {
+                listFavorite.clear();
+                listFavorite.addAll((List<FavoriteModel>) filterResults.values);
+
+                notifyDataSetChanged();
+            }
+        };
     }
 }

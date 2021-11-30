@@ -383,6 +383,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
         auth.signOut();
+        editAkunPreferences.uncheckEdit();
         finish();
     }
 

@@ -6,12 +6,14 @@ public class Course
     private String nama;
     private String deskripsi;
     private String kode;
+    private String jurusan;
 
-    public Course(String nama, String deskripsi, String kode)
+    public Course(String nama, String deskripsi, String kode, String jurusan)
     {
         this.nama = nama;
         this.deskripsi = deskripsi;
         this.kode = kode;
+        this.jurusan = jurusan;
     }
 
     public Long getId()
@@ -52,5 +54,15 @@ public class Course
     public void setKode(String kode)
     {
         this.kode = kode;
+    }
+
+    public String getJurusan()
+    {
+        return jurusan;
+    }
+
+    public void setJurusan(String jurusan)
+    {
+        this.jurusan = jurusan;
     }
 }

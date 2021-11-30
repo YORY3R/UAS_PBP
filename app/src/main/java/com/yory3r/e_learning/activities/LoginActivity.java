@@ -88,7 +88,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             if(inputEmail && inputPassword && emailValidation && passwordValidation)
             {
-                String email = etEmail.getText().toString();
+                String email = etEmail.getText().toString().toLowerCase();
                 String password = etPassword.getText().toString();
 
                 loginUser(email, password);

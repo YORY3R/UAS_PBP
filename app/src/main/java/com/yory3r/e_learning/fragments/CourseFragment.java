@@ -145,6 +145,14 @@ public class CourseFragment extends Fragment implements SearchView.OnQueryTextLi
                 adapter.setCourseList(courseResponse.getCourseList());
                 adapter.getFilter().filter(svCourse.getQuery());
 
+
+
+
+
+
+
+
+
                 srCourse.setRefreshing(false);
             }
         },new Response.ErrorListener()
@@ -165,9 +173,6 @@ public class CourseFragment extends Fragment implements SearchView.OnQueryTextLi
                 {
                     Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
-
-                MenuItem menuFavorite = getActivity().findViewById(R.id.menuFavorite);
-                menuFavorite.setEnabled(false);
             }
         })
         {

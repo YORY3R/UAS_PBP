@@ -2,6 +2,7 @@ package com.yory3r.e_learning.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,8 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView.LayoutManager;
 import com.android.volley.RequestQueue;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,6 +45,7 @@ public class FavoriteActivity extends AppCompatActivity implements SearchView.On
     private RecyclerView rvFavorite;
     private SearchView svFavorite;
     private SwipeRefreshLayout srFavorite;
+    private CardView cvNoData;
 
     private ChangeString change;
 
@@ -66,6 +70,8 @@ public class FavoriteActivity extends AppCompatActivity implements SearchView.On
         initView();
         initListener();
         initAdapter();
+
+        checkEmpty();
     }
     private void initFirebase()
     {
@@ -83,6 +89,7 @@ public class FavoriteActivity extends AppCompatActivity implements SearchView.On
         rvFavorite = binding.rvFavorite;
         svFavorite = binding.svFavorite;
         srFavorite = binding.srFavorite;
+        cvNoData = binding.cvNoData;
     }
 
     private void initListener()
@@ -124,6 +131,24 @@ public class FavoriteActivity extends AppCompatActivity implements SearchView.On
         rvFavorite.setAdapter(adapter);
     }
 
+    private void checkEmpty()
+    {
+        databaseReference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task)
+            {
+                if(task.isSuccessful())
+                {
+                    if(task.getResult().exists())
+                    {
+                        cvNoData.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+    }
+
     @Override
     public boolean onQueryTextSubmit(String s)
     {
@@ -133,6 +158,7 @@ public class FavoriteActivity extends AppCompatActivity implements SearchView.On
     @Override
     public boolean onQueryTextChange(String s)
     {
+        adapter.getFilter().filter(s);
         return false;
     }
 
@@ -140,6 +166,7 @@ public class FavoriteActivity extends AppCompatActivity implements SearchView.On
     public void onRefresh()
     {
         initAdapter();
+        checkEmpty();
 
         srFavorite.setRefreshing(false);
     }
@@ -156,13 +183,5 @@ public class FavoriteActivity extends AppCompatActivity implements SearchView.On
         intent = new Intent(FavoriteActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
-
-
     }
 }
