@@ -40,6 +40,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.yory3r.e_learning.R;
 import com.yory3r.e_learning.activities.CreateUpdateActivity;
+import com.yory3r.e_learning.activities.MainActivity;
 import com.yory3r.e_learning.adapters.CourseAdapter;
 import com.yory3r.e_learning.api.CourseApi;
 import com.yory3r.e_learning.databinding.FragmentCourseBinding;
@@ -127,7 +128,7 @@ public class CourseFragment extends Fragment implements SearchView.OnQueryTextLi
     @Override
     public void onRefresh()
     {
-        getAllCourse();
+        restartActivity();
     }
 
     private void getAllCourse()
@@ -194,5 +195,11 @@ public class CourseFragment extends Fragment implements SearchView.OnQueryTextLi
     {
         super.onDestroyView();
         binding = null;
+    }
+
+    private void restartActivity()
+    {
+        getActivity().startActivity(new Intent(getContext(), MainActivity.class));
+        getActivity().finish();
     }
 }
