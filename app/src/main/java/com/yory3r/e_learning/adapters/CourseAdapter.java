@@ -21,6 +21,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -145,6 +146,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.viewHolder
     {
         course = filteredCourseList.get(position);
 
+        Glide.with(context).load(course.getUrlfoto()).into(holder.ivFoto);
+
         holder.tvNama.setText(course.getNama());
         holder.tvKode.setText(course.getKode());
         holder.tvJurusan.setText(course.getJurusan());
@@ -187,14 +190,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.viewHolder
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot)
                     {
-                        if(snapshot.getValue() != null)
-                        {
-                            Toast.makeText(context, "Sudah Pernah Tambah Course " + nama + " Ke Favorite", Toast.LENGTH_SHORT).show();
-                        }
-                        else
-                        {
-                            Toast.makeText(context, "Berhasil Tambah Favorite", Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(context, "Berhasil Tambah Favorite", Toast.LENGTH_SHORT).show();
 
                         holder.btnTambah.setBackgroundResource(R.drawable.ic_baseline_favorite_24);
                     }
@@ -283,16 +279,18 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.viewHolder
 
         long id = course.getId();
         String nama = course.getNama();
-        String deskripsi = course.getDeskripsi();
         String kode = course.getKode();
         String jurusan = course.getJurusan();
+        String deskripsi = course.getDeskripsi();
+        String urlfoto = course.getUrlfoto();
 
         FavoriteModel favorite = new FavoriteModel();
         favorite.setId(id);
         favorite.setNama(nama);
-        favorite.setDeskripsi(deskripsi);
         favorite.setKode(kode);
         favorite.setJurusan(jurusan);
+        favorite.setDeskripsi(deskripsi);
+        favorite.setUrlfoto(urlfoto);
         favorite.setFavorite(true);
 
         databaseReference.child(String.valueOf(id))

@@ -30,7 +30,7 @@
                 android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_baseline_email_24" />
+                android:src="@drawable/notfound" />
 
             <LinearLayout
                 android:layout_width="match_parent"

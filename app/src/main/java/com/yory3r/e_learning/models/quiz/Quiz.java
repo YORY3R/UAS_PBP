@@ -1,20 +1,20 @@
-package com.yory3r.e_learning.models.course;
+package com.yory3r.e_learning.models.quiz;
 
-public class Course
+public class Quiz
 {
     private Long id;
     private String nama;
     private String kode;
-    private String jurusan;
-    private String deskripsi;
+    private String pertanyaan;
+    private String jawaban;
     private String urlfoto;
 
-    public Course(String nama, String kode, String jurusan, String deskripsi, String urlfoto)
+    public Quiz(String nama, String kode, String pertanyaan, String jawaban, String urlfoto)
     {
         this.nama = nama;
         this.kode = kode;
-        this.jurusan = jurusan;
-        this.deskripsi = deskripsi;
+        this.pertanyaan = pertanyaan;
+        this.jawaban = jawaban;
         this.urlfoto = urlfoto;
     }
 
@@ -48,24 +48,24 @@ public class Course
         this.kode = kode;
     }
 
-    public String getJurusan()
+    public String getPertanyaan()
     {
-        return jurusan;
+        return pertanyaan;
     }
 
-    public void setJurusan(String jurusan)
+    public void setPertanyaan(String pertanyaan)
     {
-        this.jurusan = jurusan;
+        this.pertanyaan = pertanyaan;
     }
 
-    public String getDeskripsi()
+    public String getJawaban()
     {
-        return deskripsi;
+        return jawaban;
     }
 
-    public void setDeskripsi(String deskripsi)
+    public void setJawaban(String jawaban)
     {
-        this.deskripsi = deskripsi;
+        this.jawaban = jawaban;
     }
 
     public String getUrlfoto()

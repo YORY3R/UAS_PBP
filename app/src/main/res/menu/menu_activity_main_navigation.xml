@@ -9,17 +9,16 @@
             android:icon="@drawable/ic_baseline_menu_book_24"
             android:title="Course" />
         <item
+            android:id="@+id/nav_quiz"
+            android:icon="@drawable/ic_baseline_question_answer_24"
+            android:title="Quiz" />
+        <item
             android:id="@+id/nav_share"
             android:icon="@drawable/ic_baseline_share_24"
             android:title="Share" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_baseline_group_work_24"
-            android:title="About" />
-        <item
-            android:id="@+id/nav_rate"
-            android:icon="@drawable/ic_baseline_rate_review_24"
-            android:title="Rate Us
-" />
+            android:title="About Us" />
     </group>
 </menu>

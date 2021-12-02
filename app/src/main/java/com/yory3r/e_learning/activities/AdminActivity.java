@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.recyclerview.widget.RecyclerView.LayoutManager;
+import androidx.viewpager.widget.PagerTabStrip;
+import androidx.viewpager.widget.ViewPager;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -30,10 +32,13 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.yory3r.e_learning.R;
+import com.yory3r.e_learning.adapters.AdminAdapter;
 import com.yory3r.e_learning.adapters.CourseAdapter;
 import com.yory3r.e_learning.adapters.CourseAdminAdapter;
 import com.yory3r.e_learning.api.CourseApi;
+import com.yory3r.e_learning.api.QuizApi;
 import com.yory3r.e_learning.databinding.ActivityAdminBinding;
+import com.yory3r.e_learning.fragments.CourseAdminFragment;
 import com.yory3r.e_learning.models.course.CourseResponse;
 
 import org.json.JSONObject;
@@ -43,17 +48,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AdminActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener
+public class AdminActivity extends AppCompatActivity implements View.OnClickListener
 {
-    public static final int LAUNCH_ADD_ACTIVITY = 123;
-
-    private CourseAdminAdapter adapter;
-    private LayoutManager manager;
-    private RecyclerView rvCourseAdmin;
-    private SearchView svCourseAdmin;
-    private SwipeRefreshLayout srCourseAdmin;
+    private ViewPager viewPager;
+    private PagerTabStrip header;
     private FloatingActionButton fabCreate;
-    private LinearLayout layoutLoading;
+    private AdminAdapter adapter;
     private RequestQueue queue;
     private Intent intent;
     private ActivityAdminBinding binding;
@@ -71,117 +71,38 @@ public class AdminActivity extends AppCompatActivity implements SearchView.OnQue
         initView();
         initListener();
         initAdapter();
-
-        getAllCourse();
     }
 
     private void initView()
     {
-        rvCourseAdmin = binding.rvCourseAdmin;
-        svCourseAdmin = binding.svCourseAdmin;
-        srCourseAdmin = binding.srCourseAdmin;
+        viewPager = binding.viewPager;
+        header = binding.viewPagerHeader;
         fabCreate = binding.fabCreate;
-        layoutLoading = binding.layoutLoading.getRoot();
     }
 
     private void initListener()
     {
-        svCourseAdmin.setOnQueryTextListener(AdminActivity.this);
-        srCourseAdmin.setOnRefreshListener(AdminActivity.this);
         fabCreate.setOnClickListener(AdminActivity.this);
     }
 
     private void initAdapter()
     {
-        adapter = new CourseAdminAdapter(new ArrayList<>(), AdminActivity.this);
-        manager = new LinearLayoutManager(AdminActivity.this);
-
-        rvCourseAdmin.setLayoutManager(manager);
-        rvCourseAdmin.setAdapter(adapter);
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String s)
-    {
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String s)
-    {
-        adapter.getFilter().filter(s);
-        return false;
-    }
-
-    @Override
-    public void onRefresh()
-    {
-        getAllCourse();
+        adapter = new AdminAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
     }
 
     @Override
     public void onClick(View view)
     {
-        intent = new Intent(AdminActivity.this, CreateUpdateActivity.class);
-        startActivity(intent);
+        if(view.getId() == fabCreate.getId())
+        {
+            gotoCreateUpdateActivity();
+        }
     }
-    
 
-    private void getAllCourse()
-    {
-        srCourseAdmin.setRefreshing(true);
-
-        StringRequest stringRequest = new StringRequest(GET, CourseApi.READ, new Response.Listener<String>()
-        {
-            @Override
-            public void onResponse(String response)
-            {
-                Gson gson = new Gson();
-                CourseResponse courseResponse = gson.fromJson(response, CourseResponse.class);
-
-                adapter.setCourseList(courseResponse.getCourseList());
-                adapter.getFilter().filter(svCourseAdmin.getQuery());
-
-                srCourseAdmin.setRefreshing(false);
-            }
-        },new Response.ErrorListener()
-        {
-            @Override
-            public void onErrorResponse(VolleyError error)
-            {
-                srCourseAdmin.setRefreshing(false);
-
-                try
-                {
-                    String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
-                    JSONObject errors = new JSONObject(responseBody);
-
-                    Toast.makeText(AdminActivity.this, errors.getString("message"), Toast.LENGTH_SHORT).show();
-                }
-                catch(Exception e)
-                {
-                    Toast.makeText(AdminActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        })
-        {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError
-            {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Accept", "application/json");
-
-                return headers;
-            }
-        };
-
-        queue.add(stringRequest);
-    }
 
     public void deleteCourse(long id)
     {
-        setLoading(true);
-
         StringRequest stringRequest = new StringRequest(DELETE, CourseApi.DELETE + id, new Response.Listener<String>()
         {
             @Override
@@ -189,20 +110,12 @@ public class AdminActivity extends AppCompatActivity implements SearchView.OnQue
             {
                 Toast.makeText(AdminActivity.this, response, Toast.LENGTH_SHORT).show();
 
-                getAllCourse();
-
-
-                setLoading(false);
-
-
             }
         }, new Response.ErrorListener()
         {
             @Override
             public void onErrorResponse(VolleyError error)
             {
-                setLoading(false);
-
                 try
                 {
                     String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
@@ -230,28 +143,72 @@ public class AdminActivity extends AppCompatActivity implements SearchView.OnQue
         queue.add(stringRequest);
     }
 
-    private void setLoading(boolean isLoading)
+    public void deleteQuiz(long id)
     {
-        if(isLoading)
+        StringRequest stringRequest = new StringRequest(DELETE, QuizApi.DELETE + id, new Response.Listener<String>()
         {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            layoutLoading.setVisibility(View.VISIBLE);
-        }
-        else
+            @Override
+            public void onResponse(String response)
+            {
+                Toast.makeText(AdminActivity.this, response, Toast.LENGTH_SHORT).show();
+
+            }
+        }, new Response.ErrorListener()
         {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-            layoutLoading.setVisibility(View.GONE);
-        }
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+                try
+                {
+                    String responseBody = new String(error.networkResponse.data, StandardCharsets.UTF_8);
+                    JSONObject errors = new JSONObject(responseBody);
+
+                    Toast.makeText(AdminActivity.this, errors.getString("message"), Toast.LENGTH_SHORT).show();
+                }
+                catch(Exception e)
+                {
+                    Toast.makeText(AdminActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError
+            {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+
+                return headers;
+            }
+        };
+
+        queue.add(stringRequest);
     }
 
     @Override
-    public void onBackPressed() 
+    public void onBackPressed()
     {
         super.onBackPressed();
-        
+
         intent = new Intent(AdminActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void gotoCreateUpdateActivity()
+    {
+        intent = new Intent(AdminActivity.this, CreateUpdateActivity.class);
+
+        if(viewPager.getCurrentItem() == 0)//Course
+        {
+            intent.putExtra("page","Course");
+        }
+        else if(viewPager.getCurrentItem() == 1)//Quiz
+        {
+            intent.putExtra("page","Quiz");
+        }
+
+        startActivity(intent);
     }
 
     // TODO: 28/11/2021 GANTI INTENT JADI GOTO APA ACTIVITY GITU ! 

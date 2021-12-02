@@ -14,6 +14,7 @@
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/activity_main_content.xml" value="0.128" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/activity_main_navigation_header.xml" value="0.2546875" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/activity_main_toolbar.xml" value="0.152" />
+        <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/activity_maps.xml" value="0.20897435897435898" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/activity_navigation.xml" value="0.2546875" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/activity_profile.xml" value="0.264" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/activity_qr.xml" value="0.19786324786324785" />
@@ -24,7 +25,9 @@
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/app_bar_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/content_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/dialog_edit.xml" value="0.2546875" />
+        <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/fragment_about.xml" value="0.10854700854700855" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/fragment_course.xml" value="0.264" />
+        <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/fragment_course_admin.xml" value="0.20897435897435898" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/fragment_gallery.xml" value="0.25416666666666665" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/fragment_home.xml" value="0.25416666666666665" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/fragment_home_bottom_navigation.xml" value="0.2546875" />
@@ -32,16 +35,20 @@
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/fragment_maps.xml" value="0.2546875" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/fragment_module.xml" value="0.2546875" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/fragment_navigation.xml" value="0.25416666666666665" />
+        <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/fragment_quiz.xml" value="0.20854700854700856" />
+        <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/fragment_quiz_admin.xml" value="0.20897435897435898" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/fragment_rate.xml" value="0.2546875" />
-        <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/fragment_share.xml" value="0.12386018237082067" />
+        <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/fragment_share.xml" value="0.264" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/fragment_slideshow.xml" value="0.25416666666666665" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/item_about.xml" value="0.25416666666666665" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/item_course.xml" value="0.2546875" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/item_course_admin.xml" value="0.2546875" />
-        <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/item_favorite.xml" value="0.2546875" />
+        <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/item_favorite.xml" value="0.2" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/item_game.xml" value="0.2546875" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/item_home_navigation.xml" value="0.2546875" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/item_list.xml" value="0.2546875" />
+        <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/item_quiz.xml" value="0.20854700854700856" />
+        <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/item_quiz_admin.xml" value="0.20897435897435898" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/item_share.xml" value="0.264" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/layout_deskripsi.xml" value="0.2546875" />
         <entry key="..\:/Aplikasi/Android/Project/ELearning/app/src/main/res/layout/layout_loading.xml" value="0.2546875" />

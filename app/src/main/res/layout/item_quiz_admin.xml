@@ -4,12 +4,12 @@
 
     <data>
         <variable
-            name="itemCourseAdmin"
-            type="com.yory3r.e_learning.adapters.CourseAdapter" />
+            name="itemQuizAdmin"
+            type="com.yory3r.e_learning.adapters.QuizAdapter" />
     </data>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/layoutCourseAdmin"
+        android:id="@+id/layoutQuizAdmin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
@@ -58,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:layout_weight="3"
+                        android:layout_weight="2"
                         android:ellipsize="end"
                         android:text="Nama : "
                         android:textColor="#4E4E4E"
@@ -74,7 +74,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_weight="1"
                         android:ellipsize="end"
-                        android:text="Nama Course"
+                        android:text="Nama Quiz"
                         android:textColor="#000000"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -94,7 +94,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:layout_weight="3"
+                        android:layout_weight="2"
                         android:ellipsize="end"
                         android:text="Kode : "
                         android:textColor="#4E4E4E"
@@ -108,7 +108,7 @@
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
                         android:layout_weight="1"
-                        android:text="Kode Course"
+                        android:text="Kode Quiz"
                         android:textColor="#000000"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -128,21 +128,21 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:layout_weight="3"
+                        android:layout_weight="2"
                         android:ellipsize="end"
-                        android:text="Jurusan : "
+                        android:text="Pertanyaan : "
                         android:textColor="#4E4E4E"
                         android:textSize="16sp"
                         android:textStyle="normal" />
 
                     <TextView
-                        android:id="@+id/tvJurusan"
+                        android:id="@+id/tvPertanyaan"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
                         android:layout_weight="1"
-                        android:text="Jurusan Course"
+                        android:text="Pertanyaan Quiz"
                         android:textColor="#000000"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -162,15 +162,15 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:layout_marginBottom="5dp"
-                        android:layout_weight="3"
+                        android:layout_weight="2"
                         android:ellipsize="end"
-                        android:text="Deskripsi : "
+                        android:text="Jawaban : "
                         android:textColor="#4E4E4E"
                         android:textSize="16sp"
                         android:textStyle="normal" />
 
                     <TextView
-                        android:id="@+id/tvDeskripsi"
+                        android:id="@+id/tvJawaban"
                         style="@style/TextAppearance.MaterialComponents.Body2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -178,7 +178,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_weight="1"
                         android:ellipsize="end"
-                        android:text="Deskripsi Course"
+                        android:text="Jawaban Quiz"
                         android:textColor="#000000"
                         android:textSize="16sp"
                         android:textStyle="bold" />

@@ -4,9 +4,10 @@ public class FavoriteModel
 {
     private long id;
     private String nama;
-    private String deskripsi;
     private String kode;
     private String jurusan;
+    private String deskripsi;
+    private String urlfoto;
     private boolean isFavorite;
 
     public FavoriteModel(){}
@@ -31,16 +32,6 @@ public class FavoriteModel
         this.nama = nama;
     }
 
-    public String getDeskripsi()
-    {
-        return deskripsi;
-    }
-
-    public void setDeskripsi(String deskripsi)
-    {
-        this.deskripsi = deskripsi;
-    }
-
     public String getKode()
     {
         return kode;
@@ -59,6 +50,26 @@ public class FavoriteModel
     public void setJurusan(String jurusan)
     {
         this.jurusan = jurusan;
+    }
+
+    public String getDeskripsi()
+    {
+        return deskripsi;
+    }
+
+    public void setDeskripsi(String deskripsi)
+    {
+        this.deskripsi = deskripsi;
+    }
+
+    public String getUrlfoto()
+    {
+        return urlfoto;
+    }
+
+    public void setUrlfoto(String urlfoto)
+    {
+        this.urlfoto = urlfoto;
     }
 
     public boolean getFavorite()

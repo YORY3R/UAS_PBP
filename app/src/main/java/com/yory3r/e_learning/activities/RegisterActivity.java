@@ -274,9 +274,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 String email = etEmail.getText().toString().toLowerCase();
                 String password = etPassword.getText().toString();
 
+                setButtonEnabled(false);
+
                 registerUser(nama, tanggalLahir, jenisKelamin, nomorTelepon, email, password);
             }
         }
+    }
+
+    private void setButtonEnabled(boolean code)
+    {
+        btnRegister.setEnabled(code);
+        btnLogin.setEnabled(code);
+
+        btnRegister.setClickable(code);
+        btnLogin.setClickable(code);
     }
 
     @Override
@@ -415,6 +426,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                     if (user != null)
                     {
+                        btnRegister.setEnabled(false);
+                        btnLogin.setEnabled(false);
+
                         sendEmail(user);
                         sendDatabase(nama, tanggalLahir, jenisKelamin, nomorTelepon, email, password);
                     }
@@ -432,6 +446,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         etPassword.setError(error);
                     }
                 }
+
+                setButtonEnabled(true);
             }
         });
     }

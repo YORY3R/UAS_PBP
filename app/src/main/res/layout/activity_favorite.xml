@@ -82,21 +82,5 @@
 
         </LinearLayout>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvNoData"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:cropToPadding="true"
-                android:scaleType="center"
-                app:srcCompat="@drawable/nodata" />
-
-        </androidx.cardview.widget.CardView>
-
     </FrameLayout>
 </layout>

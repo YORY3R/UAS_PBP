@@ -73,7 +73,6 @@ public class FavoriteActivity extends AppCompatActivity implements SearchView.On
     private RecyclerView rvFavorite;
     private SearchView svFavorite;
     private SwipeRefreshLayout srFavorite;
-    private CardView cvNoData;
     private Button btnPdf;
     private Button btnQr;
 
@@ -106,8 +105,6 @@ public class FavoriteActivity extends AppCompatActivity implements SearchView.On
 
         initListener();
         initAdapter();
-
-        checkEmpty();
     }
     private void initFirebase()
     {
@@ -125,7 +122,6 @@ public class FavoriteActivity extends AppCompatActivity implements SearchView.On
         rvFavorite = binding.rvFavorite;
         svFavorite = binding.svFavorite;
         srFavorite = binding.srFavorite;
-        cvNoData = binding.cvNoData;
         btnPdf = binding.btnPdf;
         btnQr = binding.btnQr;
     }
@@ -177,24 +173,6 @@ public class FavoriteActivity extends AppCompatActivity implements SearchView.On
 
     }
 
-    private void checkEmpty()
-    {
-        databaseReference.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>()
-        {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task)
-            {
-                if(task.isSuccessful())
-                {
-                    if(task.getResult().exists())
-                    {
-                        cvNoData.setVisibility(View.GONE);
-                    }
-                }
-            }
-        });
-    }
-
     @Override
     public boolean onQueryTextSubmit(String s)
     {
@@ -212,7 +190,6 @@ public class FavoriteActivity extends AppCompatActivity implements SearchView.On
     public void onRefresh()
     {
         initAdapter();
-        checkEmpty();
 
         srFavorite.setRefreshing(false);
     }

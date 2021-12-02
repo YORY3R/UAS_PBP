@@ -91,9 +91,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 String email = etEmail.getText().toString().toLowerCase();
                 String password = etPassword.getText().toString();
 
+                setButtonEnabled(false);
+
                 loginUser(email, password);
             }
         }
+    }
+
+    private void setButtonEnabled(boolean code)
+    {
+        btnRegister.setEnabled(code);
+        btnLogin.setEnabled(code);
+
+        btnRegister.setClickable(code);
+        btnLogin.setClickable(code);
     }
 
     private boolean isEmpty(EditText editText, String input)
@@ -173,6 +184,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     Toast.makeText(LoginActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
+
+                setButtonEnabled(true);
             }
         });
     }

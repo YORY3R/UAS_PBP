@@ -1,41 +1,23 @@
 package com.yory3r.e_learning.activities;
 
-import static android.content.ContentValues.TAG;
-
-import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.util.Base64;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+//import com.christophesmet.android.views.maskableframelayout.MaskableFrameLayout;
+import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.databinding.DataBindingUtil;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -55,22 +37,12 @@ import com.google.firebase.storage.StorageReference;
 import com.yory3r.e_learning.R;
 import com.yory3r.e_learning.databinding.ActivityMainBinding;
 import com.yory3r.e_learning.databinding.ActivityMainNavigationHeaderBinding;
-import com.yory3r.e_learning.fragments.MapsFragment;
 import com.yory3r.e_learning.models.UserModel;
 import com.yory3r.e_learning.preferences.AdminPreferences;
 import com.yory3r.e_learning.preferences.EditAkunPreferences;
 import com.yory3r.e_learning.utils.ChangeString;
-import com.yory3r.e_learning.utils.ResizeBitmap;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigationView.OnNavigationItemSelectedListener
+public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
     private AppBarConfiguration appBarConfiguration;
     private NavController navController;
@@ -79,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private Toolbar toolbar;
-    private BottomNavigationView bottomNavigation;
 
     private MenuItem menuItem;
     private MenuItem adminItem;
@@ -87,7 +58,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private View navigationHeader;
 
-    private ImageView ivFotoProfil;
+//    private MaskableFrameLayout mflFoto;
+    private PorterShapeImageView ivFotoProfil;
     private TextView tvNamaProfil;
     private TextView tvEmailProfil;
 
@@ -147,14 +119,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getData();
 
 
-
-
+// TODO: 02/12/2021 BUAT JADI INI PREFERENCEWS
         editAkunPreferences = new EditAkunPreferences(MainActivity.this);
         checkEdit();
 
+
         adminPreferences = new AdminPreferences(MainActivity.this);
-
-
 
 
 
@@ -171,11 +141,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         toolbar = binding.mainToolbar.toolbar;
 
-        bottomNavigation = binding.mainToolbar.bottomNavigation;
-
 
         navigationHeader = navigationView.getHeaderView(0);
 
+//        mflFoto = navigationHeader.findViewById(navigationBinding.mflFoto.getId());
         ivFotoProfil = navigationHeader.findViewById(navigationBinding.ivFotoProfil.getId());
         tvNamaProfil = navigationHeader.findViewById(navigationBinding.tvNamaProfil.getId());
         tvEmailProfil = navigationHeader.findViewById(navigationBinding.tvEmailProfil.getId());
@@ -186,8 +155,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initListener()
     {
         navigationHeader.setOnClickListener(this);
-
-        bottomNavigation.setOnNavigationItemSelectedListener(this);
     }
 
     private void initAppBar()
@@ -197,9 +164,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         appBarConfiguration = new AppBarConfiguration.Builder
         (
             R.id.nav_course,
+            R.id.nav_quiz,
             R.id.nav_share,
-            R.id.nav_about,
-            R.id.nav_rate
+            R.id.nav_about
         )
         .setOpenableLayout(drawerLayout)
         .build();
@@ -269,6 +236,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void checkAnim()
+    {
+//        if(animFotoPreferences.checkAnim())
+//        {
+//            Drawable drawable = mflFoto.getDrawableMask();
+//
+//            if (drawable instanceof AnimationDrawable)
+//            {
+//                AnimationDrawable animationDrawable = (AnimationDrawable) drawable;
+//
+//                animationDrawable.selectDrawable(0);
+//                animationDrawable.stop();
+//                animationDrawable.start();
+//            }
+//        }
+    }
+
     private void checkAdmin()
     {
         if(adminPreferences.checkAdmin())
@@ -310,11 +294,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     {
                         gotoFavoriteActivity();
                     }
-                    else if(index == 2)//Settings
+                    else if(index == 2)//maps
+                    {
+                        gotoMapsActivity();
+                    }
+                    else if(index == 3)//Settings
                     {
                         gotoSettingsActivity();
                     }
-                    else if(index == 3)//Logout
+                    else if(index == 4)//Logout
                     {
                         gotoLoginActivity();
                     }
@@ -342,21 +330,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item)
-    {
-        if(item.getItemId() == R.id.menuHome)
-        {
-            Toast.makeText(getApplicationContext(), "Home", Toast.LENGTH_SHORT).show();
-        }
-        else if(item.getItemId() == R.id.menuGame)
-        {
-            gotoGameActivity();
-        }
-
-        return true;
-    }
-
     private void gotoAdminActivity()
     {
         intent = new Intent(MainActivity.this, AdminActivity.class);
@@ -367,6 +340,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void gotoFavoriteActivity()
     {
         intent = new Intent(MainActivity.this, FavoriteActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private void gotoMapsActivity()
+    {
+        intent = new Intent(MainActivity.this, MapsActivity.class);
         startActivity(intent);
         finish();
     }
@@ -399,13 +379,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void gotoProfileActivity()
     {
         intent = new Intent(MainActivity.this, ProfileActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    private void gotoGameActivity()
-    {
-        intent = new Intent(MainActivity.this, GameActivity.class);
         startActivity(intent);
         finish();
     }

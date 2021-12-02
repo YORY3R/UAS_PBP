@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -52,7 +53,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.yory3r.e_learning.R;
 import com.yory3r.e_learning.databinding.ActivityProfileBinding;
-import com.yory3r.e_learning.databinding.DialogEditBinding;
 import com.yory3r.e_learning.models.UserModel;
 import com.yory3r.e_learning.utils.ChangeString;
 import com.yory3r.e_learning.utils.ResizeBitmap;
@@ -71,7 +71,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private static final String[] LIST_JENIS_KELAMIN = new String[]{"Laki - Laki", "Perempuan"};
 
 
-    private ImageView ivFoto;
+    private PorterShapeImageView ivFoto;
     private TextInputEditText etNama;
     private AutoCompleteTextView tvTanggalLahir;
     private AutoCompleteTextView tvJenisKelamin;
@@ -365,14 +365,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             boolean inputEmail = isEmpty(etEmail,"Email");
             boolean inputPassword = isEmpty(etPassword,"Password");
 
-            if(inputNama && inputTanggalLahir && inputJenisKelamin && inputNomorTelepon && inputEmail && inputPassword)
+            boolean teleponValidation = teleponValidation(etTelepon);
+
+            if(inputNama && inputTanggalLahir && inputJenisKelamin && inputNomorTelepon && inputEmail && inputPassword && teleponValidation)
             {
                 String nama = etNama.getText().toString();
                 String tanggalLahir = tvTanggalLahir.getText().toString();
                 String jenisKelamin=  tvJenisKelamin.getText().toString();
                 String telepon = etTelepon.getText().toString();
-//                    String email = etEmail.getText().toString();
-                String password = etPassword.getText().toString();
 
                 if(nama.equals(tempNama) && tanggalLahir.equals(tempTanggalLahir) && jenisKelamin.equals(tempJenisKelamin) && telepon.equals(tempTelepon) && firebaseUri == null)
                 {
@@ -384,30 +384,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     databaseReference.child("tanggalLahir").setValue(tanggalLahir);
                     databaseReference.child("jenisKelamin").setValue(jenisKelamin);
                     databaseReference.child("nomorTelepon").setValue(telepon);
-
-                    if(!password.equals(tempPassword))
-                    {
-                        user.updatePassword(password)
-                        .addOnCompleteListener(new OnCompleteListener<Void>()
-                        {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task)
-                            {
-                                if(task.isSuccessful())
-                                {
-                                    databaseReference.child("password").setValue(password);
-                                    gotoLoginActivity();
-
-                                    Toast.makeText(ProfileActivity.this, "Silahkan Login Lagi", Toast.LENGTH_SHORT).show();
-                                }
-                                else
-                                {
-                                    databaseReference.child("password").setValue(tempPassword);
-                                    Toast.makeText(ProfileActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-                    }
 
                     if(firebaseUri != null)
                     {
@@ -428,6 +404,23 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             Glide.with(ProfileActivity.this).load(url).into(ivFoto);
         }
 
+    }
+
+    private boolean teleponValidation(EditText telepon)
+    {
+        String strTelepon = telepon.getText().toString();
+        int length = telepon.getText().toString().length();
+
+        if((length < 11 || length > 13 || strTelepon.charAt(0) != '0' || strTelepon.charAt(1) != '8') && length != 0)
+        {
+            telepon.setError("Nomor Telepon Tidak Valid !");
+        }
+        else
+        {
+            return true;
+        }
+
+        return false;
     }
 
     @Override

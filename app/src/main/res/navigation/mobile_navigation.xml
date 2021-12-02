@@ -20,11 +20,11 @@
     <fragment
         android:id="@+id/nav_about"
         android:name="com.yory3r.e_learning.fragments.AboutFragment"
-        android:label="About"
+        android:label="About Us"
         tools:layout="@layout/fragment_about" />
     <fragment
-        android:id="@+id/nav_rate"
-        android:name="com.yory3r.e_learning.fragments.RateFragment"
-        android:label="Rate"
-        tools:layout="@layout/fragment_rate" />
+        android:id="@+id/nav_quiz"
+        android:name="com.yory3r.e_learning.fragments.QuizFragment"
+        android:label="Quiz"
+        tools:layout="@layout/fragment_quiz" />
 </navigation>

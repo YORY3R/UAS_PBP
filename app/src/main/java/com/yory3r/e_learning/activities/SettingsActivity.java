@@ -7,12 +7,10 @@ import androidx.databinding.DataBindingUtil;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,7 +19,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.yory3r.e_learning.R;
-import com.yory3r.e_learning.databinding.ActivityMainBinding;
 import com.yory3r.e_learning.databinding.ActivitySettingsBinding;
 import com.yory3r.e_learning.preferences.EditAkunPreferences;
 import com.yory3r.e_learning.utils.ChangeString;
@@ -30,6 +27,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 {
     private Button btnDelete;
     private Switch switchEdit;
+    private Switch switchAnim;
 
 
 
@@ -37,7 +35,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
     private Intent intent;
 
-    private EditAkunPreferences preferences;
+    private EditAkunPreferences editAkunPreferences;
 
     private FirebaseAuth auth;
     private FirebaseUser user;
@@ -75,8 +73,10 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
 
 
 
-        preferences = new EditAkunPreferences(SettingsActivity.this);
+        editAkunPreferences = new EditAkunPreferences(SettingsActivity.this);
         checkEdit();
+
+
 
 
     }
@@ -133,21 +133,24 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onCheckedChanged(CompoundButton compoundButton, boolean b)
     {
-        if(compoundButton.isChecked())
+        if(compoundButton.getId() == switchEdit.getId())
         {
-            preferences.setEdit("true");
-            checkEdit();
-        }
-        else
-        {
-            preferences.uncheckEdit();
+            if(compoundButton.isChecked())
+            {
+                editAkunPreferences.setEdit("true");
+            }
+            else
+            {
+                editAkunPreferences.uncheckEdit();
+            }
+
             checkEdit();
         }
     }
 
     private void checkEdit()
     {
-        if(preferences.checkEdit())
+        if(editAkunPreferences.checkEdit())
         {
             switchEdit.setChecked(true);
         }
@@ -156,6 +159,7 @@ public class SettingsActivity extends AppCompatActivity implements View.OnClickL
             switchEdit.setChecked(false);
         }
     }
+
 
     @Override
     public void onBackPressed()

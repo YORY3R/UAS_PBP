@@ -10,10 +10,8 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,22 +25,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.yory3r.e_learning.R;
 import com.yory3r.e_learning.activities.AdminActivity;
 import com.yory3r.e_learning.activities.CreateUpdateActivity;
-import com.yory3r.e_learning.activities.MainActivity;
-import com.yory3r.e_learning.databinding.ItemCourseAdminBinding;
-import com.yory3r.e_learning.databinding.ItemCourseBinding;
-import com.yory3r.e_learning.databinding.LayoutDeskripsiBinding;
-import com.yory3r.e_learning.models.course.Course;
+import com.yory3r.e_learning.databinding.ItemQuizAdminBinding;
+import com.yory3r.e_learning.models.quiz.Quiz;
 import com.yory3r.e_learning.utils.ChangeString;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CourseAdminAdapter extends RecyclerView.Adapter<CourseAdminAdapter.viewHolder>
+public class QuizAdminAdapter extends RecyclerView.Adapter<QuizAdminAdapter.viewHolder>
 {
-    private List<Course> courseList;
-    private List<Course> filteredCourseList;
+    private List<Quiz> quizList;
+    private List<Quiz> filteredQuizList;
     private Context context;
-    private Course course;
+    private Quiz quiz;
     private Intent intent;
 
     private ChangeString change;
@@ -53,14 +48,14 @@ public class CourseAdminAdapter extends RecyclerView.Adapter<CourseAdminAdapter.
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
-    private ItemCourseAdminBinding binding;
+    private ItemQuizAdminBinding binding;
 
-    public CourseAdminAdapter(List<Course> courseList, Context context)
+    public QuizAdminAdapter(List<Quiz> quizList, Context context)
     {
-        this.courseList = courseList;
+        this.quizList = quizList;
         this.context = context;
 
-        filteredCourseList = new ArrayList<>(courseList);
+        filteredQuizList = new ArrayList<>(quizList);
 
         initFirebase();
     }
@@ -81,49 +76,49 @@ public class CourseAdminAdapter extends RecyclerView.Adapter<CourseAdminAdapter.
         private ImageView ivFoto;
         private TextView tvNama;
         private TextView tvKode;
-        private TextView tvJurusan;
-        private TextView tvDeskripsi;
+        private TextView tvPertanyaan;
+        private TextView tvJawaban;
         private Button btnEdit;
         private Button btnDelete;
-        private CardView layoutCourseAdmin;
+        private CardView layoutQuizAdmin;
 
-        public viewHolder(@NonNull ItemCourseAdminBinding binding)
+        public viewHolder(@NonNull ItemQuizAdminBinding binding)
         {
             super(binding.getRoot());
 
             ivFoto = binding.ivFoto;
             tvNama = binding.tvNama;
             tvKode = binding.tvKode;
-            tvJurusan = binding.tvJurusan;
-            tvDeskripsi = binding.tvDeskripsi;
+            tvPertanyaan = binding.tvPertanyaan;
+            tvJawaban = binding.tvJawaban;
             btnEdit = binding.btnEdit;
             btnDelete = binding.btnDelete;
-            layoutCourseAdmin = binding.layoutCourseAdmin;
+            layoutQuizAdmin = binding.layoutQuizAdmin;
         }
     }
 
     @NonNull
     @Override
-    public CourseAdminAdapter.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    public QuizAdminAdapter.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(context);
-        int layout = R.layout.item_course_admin;
+        int layout = R.layout.item_quiz_admin;
 
         binding = DataBindingUtil.inflate(inflater,layout,parent,false);
-        return new CourseAdminAdapter.viewHolder(binding);
+        return new QuizAdminAdapter.viewHolder(binding);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CourseAdminAdapter.viewHolder holder, int position)
+    public void onBindViewHolder(@NonNull QuizAdminAdapter.viewHolder holder, int position)
     {
-        course = filteredCourseList.get(position);
+        quiz = filteredQuizList.get(position);
 
-        Glide.with(context).load(course.getUrlfoto()).into(holder.ivFoto);
+        Glide.with(context).load(quiz.getUrlfoto()).into(holder.ivFoto);
 
-        holder.tvNama.setText(course.getNama());
-        holder.tvKode.setText(course.getKode());
-        holder.tvJurusan.setText(course.getJurusan());
-        holder.tvDeskripsi.setText(course.getDeskripsi());
+        holder.tvNama.setText(quiz.getNama());
+        holder.tvKode.setText(quiz.getKode());
+        holder.tvPertanyaan.setText(quiz.getPertanyaan());
+        holder.tvJawaban.setText(quiz.getJawaban());
 
         holder.btnEdit.setOnClickListener(new View.OnClickListener()
         {
@@ -142,7 +137,7 @@ public class CourseAdminAdapter extends RecyclerView.Adapter<CourseAdminAdapter.
                 MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context);
 
                 builder.setTitle("Konfirmasi");
-                builder.setMessage("Apakah anda yakin ingin menghapus data Course ini?");
+                builder.setMessage("Apakah anda yakin ingin menghapus data Quiz ini?");
                 builder.setNegativeButton("Batal", null);
 
                 builder.setPositiveButton("Hapus", new DialogInterface.OnClickListener()
@@ -150,12 +145,12 @@ public class CourseAdminAdapter extends RecyclerView.Adapter<CourseAdminAdapter.
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i)
                     {
-                        course = filteredCourseList.get(holder.getAdapterPosition());
+                        quiz = filteredQuizList.get(holder.getAdapterPosition());
 
                         if (context instanceof AdminActivity)
                         {
-                            ((AdminActivity) context).deleteCourse(course.getId());
-                            databaseReference.child(String.valueOf(course.getId())).removeValue();
+                            ((AdminActivity) context).deleteQuiz(quiz.getId());
+                            databaseReference.child(String.valueOf(quiz.getId())).removeValue();
                         }
                     }
                 });
@@ -164,7 +159,7 @@ public class CourseAdminAdapter extends RecyclerView.Adapter<CourseAdminAdapter.
             }
         });
 
-        holder.layoutCourseAdmin.setOnClickListener(new View.OnClickListener()
+        holder.layoutQuizAdmin.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
@@ -177,13 +172,13 @@ public class CourseAdminAdapter extends RecyclerView.Adapter<CourseAdminAdapter.
     @Override
     public int getItemCount()
     {
-        return filteredCourseList.size();
+        return filteredQuizList.size();
     }
 
-    public void setCourseList(List<Course> courseList)
+    public void setQuizList(List<Quiz> quizList)
     {
-        this.courseList = courseList;
-        filteredCourseList = new ArrayList<>(courseList);
+        this.quizList = quizList;
+        filteredQuizList = new ArrayList<>(quizList);
     }
 
     public Filter getFilter()
@@ -194,19 +189,19 @@ public class CourseAdminAdapter extends RecyclerView.Adapter<CourseAdminAdapter.
             protected FilterResults performFiltering(CharSequence charSequence)
             {
                 String charSequenceString = charSequence.toString();
-                List<Course> filtered = new ArrayList<>();
+                List<Quiz> filtered = new ArrayList<>();
 
                 if (charSequenceString.isEmpty())
                 {
-                    filtered.addAll(courseList);
+                    filtered.addAll(quizList);
                 }
                 else
                 {
-                    for (Course course : courseList)
+                    for (Quiz quiz : quizList)
                     {
-                        if (course.getNama().toLowerCase().contains(charSequenceString.toLowerCase()))
+                        if (quiz.getNama().toLowerCase().contains(charSequenceString.toLowerCase()))
                         {
-                            filtered.add(course);
+                            filtered.add(quiz);
                         }
                     }
                 }
@@ -220,26 +215,26 @@ public class CourseAdminAdapter extends RecyclerView.Adapter<CourseAdminAdapter.
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults)
             {
-                filteredCourseList.clear();
-                filteredCourseList.addAll((List<Course>) filterResults.values);
+                filteredQuizList.clear();
+                filteredQuizList.addAll((List<Quiz>) filterResults.values);
 
                 notifyDataSetChanged();
             }
         };
     }
 
-    private void gotoCreateUpdateActivity(CourseAdminAdapter.viewHolder holder)
+    private void gotoCreateUpdateActivity(QuizAdminAdapter.viewHolder holder)
     {
-        course = filteredCourseList.get(holder.getAdapterPosition());
+        quiz = filteredQuizList.get(holder.getAdapterPosition());
         intent = new Intent(context, CreateUpdateActivity.class);
 
-        intent.putExtra("page","Course");
-        intent.putExtra("id", course.getId());
-        intent.putExtra("nama", course.getNama());
-        intent.putExtra("kode",course.getKode());
-        intent.putExtra("jurusan",course.getJurusan());
-        intent.putExtra("deskripsi",course.getDeskripsi());
-        intent.putExtra("urlfoto",course.getUrlfoto());
+        intent.putExtra("page","Quiz");
+        intent.putExtra("id", quiz.getId());
+        intent.putExtra("nama", quiz.getNama());
+        intent.putExtra("kode",quiz.getKode());
+        intent.putExtra("pertanyaan",quiz.getPertanyaan());
+        intent.putExtra("jawaban",quiz.getJawaban());
+        intent.putExtra("urlfoto",quiz.getUrlfoto());
 
         if (context instanceof AdminActivity)
         {

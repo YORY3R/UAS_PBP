@@ -45,7 +45,7 @@
                         android:layout_marginEnd="10dp"
                         android:layout_weight="1"
                         android:text="Aktifkan Edit Akun"
-                        android:textColor="#D50000"
+                        android:textColor="#000000"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 

@@ -13,6 +13,11 @@
         android:title="Favorite"
         app:showAsAction="always" />
     <item
+        android:id="@+id/menuMaps"
+        android:icon="@drawable/ic_baseline_map_24"
+        android:title="Maps"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menuSettings"
         android:icon="@drawable/ic_baseline_settings_24"
         android:title="Settings"

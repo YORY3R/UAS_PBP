@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -129,7 +130,8 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.viewHo
     {
         favorite = listFavorite.get(position);
 
-//        holder.ivFoto.setImageResource(favorite.getFoto());
+        Glide.with(context).load(favorite.getUrlfoto()).into(holder.ivFoto);
+
         holder.tvNama.setText(favorite.getNama());
         holder.tvKode.setText(favorite.getKode());
         holder.tvJurusan.setText(favorite.getJurusan());
