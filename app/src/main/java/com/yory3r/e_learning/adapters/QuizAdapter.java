@@ -18,6 +18,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -88,7 +89,7 @@ public class QuizAdapter extends RecyclerView.Adapter<QuizAdapter.viewHolder>
     public class viewHolder extends RecyclerView.ViewHolder
     {
         private CardView cvWarna;
-        private ImageView ivFoto;
+        private PorterShapeImageView ivFoto;
         private TextView tvNama;
         private TextView tvKode;
         private TextView tvPertanyaan;

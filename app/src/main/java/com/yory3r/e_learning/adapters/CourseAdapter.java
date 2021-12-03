@@ -22,6 +22,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -110,7 +111,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.viewHolder
 
     public class viewHolder extends RecyclerView.ViewHolder
     {
-        private ImageView ivFoto;
+        private PorterShapeImageView ivFoto;
         private TextView tvNama;
         private TextView tvKode;
         private TextView tvJurusan;
@@ -209,7 +210,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.viewHolder
                 initAlertDialog();
 
                 tvDeskripsi.setText(filteredCourseList.get(holder.getAdapterPosition()).getDeskripsi());
-                
+
+                builder.setIcon(R.drawable.ic_baseline_menu_book_24);
                 builder.setTitle("Deskripsi");
                 builder.setView(layoutDeskripsi);
                 builder.setPositiveButton("OK", null);

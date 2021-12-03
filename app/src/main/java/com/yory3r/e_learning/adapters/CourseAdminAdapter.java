@@ -19,6 +19,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -78,7 +79,7 @@ public class CourseAdminAdapter extends RecyclerView.Adapter<CourseAdminAdapter.
 
     public class viewHolder extends RecyclerView.ViewHolder
     {
-        private ImageView ivFoto;
+        private PorterShapeImageView ivFoto;
         private TextView tvNama;
         private TextView tvKode;
         private TextView tvJurusan;

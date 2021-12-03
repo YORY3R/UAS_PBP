@@ -16,6 +16,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.github.siyamed.shapeimageview.mask.PorterShapeImageView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.yory3r.e_learning.R;
 import com.yory3r.e_learning.activities.FavoriteActivity;
 import com.yory3r.e_learning.databinding.ItemFavoriteBinding;
+import com.yory3r.e_learning.databinding.LayoutContentFavoriteBinding;
 import com.yory3r.e_learning.databinding.LayoutDeskripsiBinding;
 import com.yory3r.e_learning.models.FavoriteModel;
 import com.yory3r.e_learning.utils.ChangeString;
@@ -46,6 +48,10 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.viewHo
     private AlertDialog.Builder builder;
     private LayoutInflater inflater;
     private View layoutDeskripsi;
+
+    private TextView tvNama;
+    private TextView tvJurusan;
+    private TextView tvKode;
     private TextView tvDeskripsi;
 
     private FirebaseAuth auth;
@@ -54,7 +60,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.viewHo
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
 
-    private LayoutDeskripsiBinding layoutBinding;
+    private LayoutContentFavoriteBinding layoutBinding;
     private ItemFavoriteBinding binding;
 
     public FavoriteAdapter(Context context, ArrayList<FavoriteModel> listFavorite)
@@ -83,20 +89,20 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.viewHo
 
         inflater = LayoutInflater.from(builder.getContext());
 
-        int layout = R.layout.layout_deskripsi;
+        int layout = R.layout.layout_content_favorite;
         layoutBinding = DataBindingUtil.inflate(inflater,layout,null,false);
-        layoutBinding.setLayoutDeskripsiFavorite(FavoriteAdapter.this);
+        layoutBinding.setLayoutContentFavorite(FavoriteAdapter.this);
 
         layoutDeskripsi = layoutBinding.getRoot();
+        tvNama = layoutBinding.tvNama;
+        tvKode = layoutBinding.tvKode;
+        tvJurusan = layoutBinding.tvJurusan;
         tvDeskripsi =  layoutBinding.tvDeskripsi;
     }
 
     public class viewHolder extends RecyclerView.ViewHolder
     {
-        private ImageView ivFoto;
-        private TextView tvNama;
-        private TextView tvKode;
-        private TextView tvJurusan;
+        private PorterShapeImageView ivFoto;
         private Button btnDelete;
         private Button btnDeskripsi;
 
@@ -105,9 +111,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.viewHo
             super(binding.getRoot());
 
             ivFoto = binding.ivFoto;
-            tvNama = binding.tvNama;
-            tvKode = binding.tvKode;
-            tvJurusan = binding.tvJurusan;
             btnDelete = binding.btnDelete;
             btnDeskripsi = binding.btnDeskripsi;
 
@@ -131,10 +134,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.viewHo
         favorite = listFavorite.get(position);
 
         Glide.with(context).load(favorite.getUrlfoto()).into(holder.ivFoto);
-
-        holder.tvNama.setText(favorite.getNama());
-        holder.tvKode.setText(favorite.getKode());
-        holder.tvJurusan.setText(favorite.getJurusan());
         
         holder.btnDelete.setOnClickListener(new View.OnClickListener() 
         {
@@ -194,10 +193,14 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.viewHo
             {
                 initAlertDialog();
 
+                tvNama.setText(listFavorite.get(holder.getAdapterPosition()).getNama());
+                tvKode.setText(listFavorite.get(holder.getAdapterPosition()).getKode());
+                tvJurusan.setText(listFavorite.get(holder.getAdapterPosition()).getJurusan());
                 tvDeskripsi.setText(listFavorite.get(holder.getAdapterPosition()).getDeskripsi());
 
 
-                builder.setTitle("Deskripsi");
+                builder.setIcon(R.drawable.ic_baseline_menu_book_24);
+                builder.setTitle("Content");
                 builder.setView(layoutDeskripsi);
                 builder.setPositiveButton("OK",null);
                 builder.show();
