@@ -29,7 +29,8 @@
                 android:paddingBottom="5dp"
                 android:text="Nama"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:justificationMode="inter_word"/>
 
             <TextView
                 android:id="@+id/tvKode"
@@ -45,7 +46,8 @@
                 android:paddingBottom="5dp"
                 android:text="Kode"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:justificationMode="inter_word"/>
 
             <TextView
                 android:id="@+id/tvJurusan"
@@ -61,7 +63,8 @@
                 android:paddingBottom="5dp"
                 android:text="Jurusan"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:justificationMode="inter_word"/>
 
             <TextView
                 android:id="@+id/tvDeskripsi"
@@ -77,7 +80,8 @@
                 android:paddingBottom="5dp"
                 android:text="Deskripsi"
                 android:textColor="#000000"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:justificationMode="inter_word"/>
         </LinearLayout>
 
     </FrameLayout>

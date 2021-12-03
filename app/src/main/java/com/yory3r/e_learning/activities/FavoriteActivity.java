@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -164,7 +165,7 @@ public class FavoriteActivity extends AppCompatActivity implements SearchView.On
         }
 
         adapter = new FavoriteAdapter(FavoriteActivity.this, listFavorite);
-        manager = new LinearLayoutManager(FavoriteActivity.this);
+        manager = new GridLayoutManager(FavoriteActivity.this,2);
 
         rvFavorite.setLayoutManager(manager);
         rvFavorite.setAdapter(adapter);

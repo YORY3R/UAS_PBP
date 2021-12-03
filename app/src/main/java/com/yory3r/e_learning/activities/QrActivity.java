@@ -29,6 +29,7 @@ public class QrActivity extends AppCompatActivity
 
     private ActivityQrBinding binding;
     private CodeScanner codeScanner;
+    private Intent intent;
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted ->
             {
@@ -69,7 +70,7 @@ public class QrActivity extends AppCompatActivity
                             switch(which)
                             {
                                 case DialogInterface.BUTTON_POSITIVE:
-                                    Intent intent = new Intent();
+                                    intent = new Intent();
                                     intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
 
                                     Uri uri = Uri.fromParts("package", getPackageName(), null);
@@ -106,7 +107,7 @@ public class QrActivity extends AppCompatActivity
             @Override
             public void onDecoded(@NonNull Result result)
             {
-                Intent intent = new Intent(QrActivity.this,FavoriteActivity.class);
+                intent = new Intent(QrActivity.this,FavoriteActivity.class);
                 intent.putExtra("QR_RESULT", result.toString());
                 setResult(RESULT_OK, intent);
                 startActivity(intent);
@@ -149,5 +150,15 @@ public class QrActivity extends AppCompatActivity
         {
             codeScanner.startPreview();
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+
+        intent = new Intent(QrActivity.this, FavoriteActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

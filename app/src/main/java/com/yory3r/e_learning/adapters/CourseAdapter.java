@@ -152,6 +152,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.viewHolder
         holder.tvNama.setText(course.getNama());
         holder.tvKode.setText(course.getKode());
         holder.tvJurusan.setText(course.getJurusan());
+        holder.btnTambah.setBackgroundResource(R.drawable.ic_baseline_favorite_border_24);
 
         databaseReference.child(String.valueOf(course.getId()))
         .addListenerForSingleValueEvent(new ValueEventListener()
@@ -183,7 +184,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.viewHolder
                 course = filteredCourseList.get(position);
 
                 long id = course.getId();
-                String nama = course.getNama();
 
                 databaseReference.child(String.valueOf(id))
                 .addListenerForSingleValueEvent(new ValueEventListener()

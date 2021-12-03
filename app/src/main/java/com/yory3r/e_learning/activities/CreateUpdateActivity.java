@@ -221,14 +221,13 @@ public class CreateUpdateActivity extends AppCompatActivity implements TextWatch
             boolean inputNama = isEmpty(etNama,"Nama");
             boolean inputKode = isEmpty(etKode,"Kode");
             boolean inputUrl = isEmpty(etUrlFoto,"Url");
-            boolean urlValidation = urlValidation(etUrlFoto);
 
             if(checkPage(page) == 0)//Course
             {
                 boolean inputJurusan = isEmpty(etJurusan,"Jurusan");
                 boolean inputDeskripsi = isEmpty(etDeskripsi,"Deskripsi");
 
-                if(inputNama && inputKode && inputJurusan && inputDeskripsi && inputUrl && urlValidation)
+                if(inputNama && inputKode && inputJurusan && inputDeskripsi && inputUrl)
                 {
                     String nama = etNama.getText().toString();
                     String kode = etKode.getText().toString();
@@ -251,7 +250,7 @@ public class CreateUpdateActivity extends AppCompatActivity implements TextWatch
                 boolean inputPertanyaan = isEmpty(etPertanyaan,"Pertanyaan");
                 boolean inputJawaban = isEmpty(etJawaban,"Jawaban");
 
-                if(inputNama && inputKode && inputPertanyaan && inputJawaban && inputUrl && urlValidation)
+                if(inputNama && inputKode && inputPertanyaan && inputJawaban && inputUrl)
                 {
                     String nama = etNama.getText().toString();
                     String kode = etKode.getText().toString();
@@ -284,20 +283,6 @@ public class CreateUpdateActivity extends AppCompatActivity implements TextWatch
         }
 
         return false;
-    }
-
-    private boolean urlValidation(TextInputEditText url)
-    {
-        String strUrl = url.getText().toString();
-        if(strUrl.contains("http://") || strUrl.contains("https://"))
-        {
-            return true;
-        }
-        else
-        {
-            url.setError("Url Tidak Valid !");
-            return false;
-        }
     }
 
     private void createCourse()
